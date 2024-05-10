@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(DA_project2
         src/main.cpp
         src/DataManip.cpp
-        src/DataManip.h)
+        src/DataManip.h
+        src/Graph.cpp)
