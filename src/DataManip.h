@@ -1,10 +1,11 @@
 #ifndef DA_PROJECT2_DATAMANIP_H
 #define DA_PROJECT2_DATAMANIP_H
 
+#include "Graph.h"
 
 class DataManip {
-private:
-    Graph graph{};
+
+    Graph graph;
 
 public:
     DataManip();
