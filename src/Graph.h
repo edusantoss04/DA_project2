@@ -178,7 +178,7 @@ public:
      * @param idDest Id of the destination vertex.
      * @return Pointer to the edge if found, nullptr otherwise.
      */
-    Edge* findEdge(unsigned int idOrigin,unsigned int idDest);
+    Edge* findEdge(int idOrigin,int idDest);
 
 };
 

@@ -4,7 +4,7 @@
 //Vertex
 
 void Vertex::addEdge(Vertex *dest, double distance) {
-    auto newEdge = new Edge(this, dest,distance);
+    auto newEdge = new Edge(this, dest, distance);
     adj.push_back(newEdge);
     dest->incoming.push_back(newEdge);
 }
@@ -171,7 +171,7 @@ void Edge::setCapacity(double distance_) {
     distance = distance_;
 }
 
-Edge* Graph::findEdge(unsigned int IdOrigin,unsigned int IdDest){
+Edge* Graph::findEdge(int IdOrigin,int IdDest){
 
     for (auto v : vertexSet){
         for(auto e : v.second->getAdj()){

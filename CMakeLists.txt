@@ -9,4 +9,5 @@ add_executable(DA_project2
         src/DataManip.h
         src/Graph.cpp
         src/Menu.h
-        src/Menu.cpp)
+        src/Menu.cpp
+)
