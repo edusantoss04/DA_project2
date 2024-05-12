@@ -22,11 +22,12 @@ public:
 
     int getBestCost() const ;
 
+    void readTourism(string filename);
     void readEdges(string filename);
     void readNodes(string filename);
     void RecursiveBackTracking(vector<int>& path,int currCost, int currPos);
     bool Solution(const std::vector<int>& path);
-    bool Bound(const std::vector<int>& path, int currCost);
+    bool Bound(int currCost);
     /**
      * @brief Get the graph representing connections between cities, stations, and reservoirs.
      *

@@ -18,7 +18,7 @@ int main(){
     //Menu menu = Menu(data);
     //menu.MainMenu();
 
-    //data.readEdges("../Toy-Graphs/shipping.csv");
+    data.readTourism("../Toy-Graphs/tourism.csv");
     //data.readEdges("../Toy-Graphs/stadiums.csv");
     //data.readEdges("../Extra_Fully_Connected_Graphs/edges_25.csv");
     vector<int> path;

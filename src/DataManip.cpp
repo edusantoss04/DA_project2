@@ -12,7 +12,49 @@ std::vector<int> DataManip::getBestPath() const {
 int DataManip::getBestCost() const {
     return bestCost;
 }
+void DataManip::readTourism(string filename) {
 
+    ifstream in(filename);
+    unsigned int destino, origem;
+    string labelo,labeld;
+    double distancia;
+    string line;
+
+    getline(in, line);
+
+    if (in.is_open()) {
+
+        while(getline(in, line)){
+
+            istringstream iss(line);
+            iss >> origem;
+
+            iss.ignore();
+            iss >> destino;
+
+            iss.ignore();
+            iss >> distancia;
+
+            iss.ignore();
+            iss >> labelo;
+            iss.ignore();
+            iss>>labeld;
+
+
+            if(graph_.findVertex(origem)== nullptr){
+                graph_.addVertex(origem,0,0);
+            }
+            if(graph_.findVertex(destino)== nullptr){
+                graph_.addVertex(destino,0,0);
+            }
+            graph_.addEdge(origem, destino, distancia);
+            graph_.addEdge(destino, origem, distancia);
+
+        }
+
+    } else
+        cout << "Could not open the file\n";
+}
 void DataManip::readEdges(string filename) {
 
     ifstream in(filename);
@@ -88,41 +130,38 @@ void DataManip::readNodes(string filename) {
 
 bool DataManip::Solution(const vector<int>& path) {
     if (path.size() != graph_.getVertexSet().size()) {
-        return false; // Se o caminho não passou por todos os vértices, não é uma solução
+        return false;
     }
 
-    // Verifica se o último vértice se conecta de volta ao primeiro vértice
     int finalVertex = path.back();
     int startVertex = 0;
     for (Edge* edge : graph_.findVertex(finalVertex)->getAdj()) {
         if (edge->getDest()->getId() == startVertex) {
-            return true; // Se houver uma aresta de volta para o primeiro vértice, é uma solução
+            return true;
         }
     }
 
-    return false; // Se nenhum vértice estiver conectado de volta ao primeiro vértice, não é uma solução
+    return false;
 }
 
-
-bool DataManip::Bound(const vector<int>& path, int currCost) {
+bool DataManip::Bound(int currCost) {
     return currCost < bestCost;
 }
 
 void DataManip::RecursiveBackTracking(vector<int>& path, int currCost, int currPos) {
 
-    // Para cada cidade possível não visitada
     for (Edge* edge : graph_.findVertex(currPos)->getAdj()) {
         int nextVertex = edge->getDest()->getId();
         if (edge && !edge->getDest()->isVisited()) {
-            // Se a inclusão da cidade não ultrapassar o melhor custo encontrado até agora
-            if (Bound(path, currCost + edge->getDistance())) {
-                // Adiciona a cidade ao caminho
+
+            if (Bound(currCost + edge->getDistance())) {
+
                 path.push_back(nextVertex);
-                // Marca a cidade como visitada após adicioná-la ao caminho
+
                 edge->getDest()->setVisited(true);
-                // Continua a busca recursivamente
+
                 RecursiveBackTracking(path, currCost + edge->getDistance(), nextVertex);
-                // Desmarca a cidade e remove do caminho para explorar outras possibilidades
+
                 edge->getDest()->setVisited(false);
                 path.pop_back();
             }
@@ -131,7 +170,6 @@ void DataManip::RecursiveBackTracking(vector<int>& path, int currCost, int currP
     }
     if (Solution(path)) {
 
-        // Atualiza o melhor custo e o melhor caminho
         if (currCost + graph_.findEdge(path.back(),path[0])->getDistance() < bestCost) {
             bestCost = currCost + graph_.findEdge(path.back(),path[0])->getDistance();
             bestPath = path;

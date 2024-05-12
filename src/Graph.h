@@ -2,8 +2,8 @@
  * @file Graph.h
  * @brief Definition of Graph class and its associated classes.
  */
-#ifndef DA_PROJECT1_GRAPH_H
-#define DA_PROJECT1_GRAPH_H
+#ifndef DA_PROJECT2_GRAPH_H
+#define DA_PROJECT2_GRAPH_H
 
 #include <map>
 #include <string>
@@ -227,4 +227,4 @@ public:
 
 };
 
-#endif //DA_PROJECT1_GRAPH_H
+#endif //DA_PROJECT2_GRAPH_H
