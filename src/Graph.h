@@ -2,8 +2,8 @@
  * @file Graph.h
  * @brief Definition of Graph class and its associated classes.
  */
-#ifndef DA_PROJECT1_GRAPH_H
-#define DA_PROJECT1_GRAPH_H
+#ifndef DA_PROJECT2_GRAPH_H
+#define DA_PROJECT2_GRAPH_H
 
 #include <map>
 #include <string>
@@ -22,8 +22,9 @@ class Vertex{
 
     vector<Edge*> adj;
     vector<Edge*> incoming;
+    double longitude;
+    double latitude;
     unsigned int id;
-    string code;
     bool visited;
     bool processing;
     unsigned indegree;
@@ -35,9 +36,9 @@ public:
     /**
      * @brief Constructor for Vertex class.
      * @param id Identifier of the vertex.
-     * @param code Code associated with the vertex.
+     * @param id Id associated with the vertex.
      */
-    Vertex(unsigned int id,string code);
+    Vertex(unsigned int id, double longitude, double latitude);
 
     /**
      * @brief Get the outgoing edges from the vertex.
@@ -58,16 +59,22 @@ public:
     unsigned int getId();
 
     /**
-     * @brief Get the code associated with the vertex.
-     * @return Code associated with the vertex.
-     */
-    string getCode();
-
-    /**
      * @brief Get the path associated with the vertex.
      * @return Pointer to the path.
      */
     Edge* getPath();
+
+    /**
+     * @brief Get the longitude of the vertex.
+     * @return Longitude of the vertex.
+     */
+    double getLongitude();
+
+    /**
+     * @brief Get the latitude of the vertex.
+     * @return Latitude of the vertex.
+     */
+    double getLatitude();
 
     /**
      * @brief Check if the vertex has been visited.
@@ -81,11 +88,6 @@ public:
     */
     void setId(unsigned int id);
 
-    /**
-     * @brief Set the code associated with the vertex.
-     * @param code Code to be set.
-     */
-    void setCode(string code);
 
     /**
      * @brief Set the visited status of the vertex.
@@ -104,7 +106,7 @@ public:
     * @param dest Pointer to the destination vertex.
     * @param capacity Capacity of the edge.
     */
-    void addEdge(Vertex* dest, unsigned int capacity);
+    void addEdge(Vertex* dest, double distance);
 
     /**
      * @brief Remove all outgoing edges from the vertex.
@@ -112,11 +114,11 @@ public:
     void removeOutgoingEdges();
 
     /**
-    * @brief Remove an edge with a given code.
-    * @param code Code of the destination vertex of the edge to be removed.
+    * @brief Remove an edge with a given id.
+    * @param id id of the destination vertex of the edge to be removed.
     * @return True if an edge was removed, false otherwise.
     */
-    bool removeEdge(string code);
+    bool removeEdge(unsigned int id);
 
     /**
      * @brief Delete an edge from the vertex.
@@ -124,11 +126,6 @@ public:
      */
     void deleteEdge(Edge *edge);
 
-    /**
-     * @brief Get the current flow through the outgoing edges of the vertex.
-     * @return Current flow through the outgoing edges.
-     */
-    unsigned int getCurrentFlow();
 };
 
 /**
@@ -136,52 +133,52 @@ public:
  * @brief Represents a graph.
  */
 class Graph {
-    map< string , Vertex* > vertexSet;
+    map< unsigned int, Vertex* > vertexSet;
 public:
     /**
-     * @brief Find a vertex with a given code.
-     * @param code Code of the vertex to be found.
+     * @brief Find a vertex with a given id.
+     * @param id Id of the vertex to be found.
      * @return Pointer to the vertex if found, nullptr otherwise.
      */
-    Vertex* findVertex(const string& code) const;
+    Vertex* findVertex(const unsigned int& id) const;
 
     /**
      * @brief Add a vertex to the graph.
      * @param id Identifier of the vertex.
-     * @param code Code associated with the vertex.
+     * @param id Id associated with the vertex.
      * @return True if the vertex was added successfully, false otherwise.
      */
-    bool addVertex(unsigned int id,string code);
+    bool addVertex(unsigned int id, double longitude, double latitude);
 
     /**
-     * @brief Add an edge between vertices with given codes.
-     * @param sourceCode Code of the source vertex.
-     * @param destCode Code of the destination vertex.
+     * @brief Add an edge between vertices with given ids.
+     * @param sourceId Id of the source vertex.
+     * @param destId Id of the destination vertex.
      * @param capacity Capacity of the edge.
      * @return True if the edge was added successfully, false otherwise.
      */
-    bool addEdge(const string &sourceCode,const string &destCode, unsigned int capacity);
+    bool addEdge(const unsigned int &sourceId,const unsigned int &destId, double distance);
 
     /**
      * @brief Get the set of vertices in the graph.
      * @return Map containing the vertices.
      */
-    map<string, Vertex*> getVertexSet();
+    map<unsigned int, Vertex*> getVertexSet();
 
     /**
-     * @brief Remove a vertex with a given code from the graph.
-     * @param code Code of the vertex to be removed.
+     * @brief Remove a vertex with a given id from the graph.
+     * @param id Id of the vertex to be removed.
      * @return True if the vertex was removed successfully, false otherwise.
      */
-    bool removeVertex(string code);
+    bool removeVertex(unsigned int id);
 
     /**
-     * @brief Find an edge between vertices with given origin and destination codes.
-     * @param codeOrigin Code of the origin vertex.
-     * @param codeDest Code of the destination vertex.
+     * @brief Find an edge between vertices with given origin and destination ids.
+     * @param idOrigin Id of the origin vertex.
+     * @param idDest Id of the destination vertex.
      * @return Pointer to the edge if found, nullptr otherwise.
      */
-    Edge* findEdge(string codeOrigin,string codeDest);
+    Edge* findEdge(int idOrigin,int idDest);
 
 };
 
@@ -192,8 +189,7 @@ public:
 class Edge{
     Vertex* dest;
     Vertex* orig;
-    unsigned int capacity;
-    unsigned int flow;
+    double distance;
 
 public:
 
@@ -203,7 +199,7 @@ public:
      * @param d Pointer to the destination vertex.
      * @param capacity Capacity of the edge.
      */
-    Edge(Vertex* o, Vertex* d , unsigned int capacity);
+    Edge(Vertex* o, Vertex* d , double distance);
 
     /**
      * @brief Get the destination vertex of the edge.
@@ -221,26 +217,14 @@ public:
      * @brief Get the capacity of the edge.
      * @return Capacity of the edge.
      */
-    unsigned int getCapacity() const;
-
-    /**
-     * @brief Get the flow through the edge.
-     * @return Flow through the edge.
-     */
-    unsigned int getFlow();
-
-    /**
-    * @brief Set the flow through the edge.
-    * @param flow_ Flow to be set.
-    */
-    void setFlow(unsigned int flow_);
+    double getDistance() const;
 
     /**
      * @brief Set the capacity of the edge.
      * @param capacity_ Capacity to be set.
      */
-    void setCapacity(unsigned int capacity_);
+    void setCapacity(double distance);
 
 };
 
-#endif //DA_PROJECT1_GRAPH_H
+#endif //DA_PROJECT2_GRAPH_H

@@ -3,25 +3,22 @@
 
 //Vertex
 
-void Vertex::addEdge(Vertex *dest, unsigned int capacity) {
-    auto newEdge = new Edge(this, dest,capacity);
+void Vertex::addEdge(Vertex *dest, double distance) {
+    auto newEdge = new Edge(this, dest, distance);
     adj.push_back(newEdge);
     dest->incoming.push_back(newEdge);
 }
 
 //constructor
-Vertex::Vertex(unsigned int id, string code) {
+Vertex::Vertex(unsigned int id, double longitude, double latitude) {
     this->id = id;
-    this->code = code;
+    this->longitude = longitude;
+    this->latitude = latitude;
 }
 
 // getters
 unsigned int Vertex::getId() {
     return id;
-}
-
-string Vertex::getCode() {
-    return code;
 }
 
 Edge* Vertex::getPath() {
@@ -36,10 +33,6 @@ bool Vertex::isVisited() {
 //setters
 void Vertex::setId(unsigned int id) {
     this->id = id;
-}
-
-void Vertex::setCode(string code) {
-    this->code = code;
 }
 
 void Vertex::setVisited(bool visited) {
@@ -67,13 +60,13 @@ void Vertex::removeOutgoingEdges() {
     }
 }
 
-bool Vertex::removeEdge(std::string code) {
+bool Vertex::removeEdge(unsigned int id) {
     bool removedEdge=false;
     auto it = adj.begin();
     while(it!=adj.end()){
         Edge *edge= *it;
         Vertex *dest = edge->getDest();
-        if(dest->getCode()== code){
+        if(dest->getId()== id){
             it=adj.erase(it);
             deleteEdge(edge);
             removedEdge = true;
@@ -89,7 +82,7 @@ void Vertex::deleteEdge(Edge *edge) {
     Vertex *dest = edge->getDest();
     auto it = dest->incoming.begin();
     while(it != dest->incoming.end()){
-        if((*it)->getOrig()->getCode()==code){
+        if((*it)->getOrig()->getId()==id){
             it=dest->incoming.erase(it);
         }
         else{
@@ -99,16 +92,16 @@ void Vertex::deleteEdge(Edge *edge) {
     delete edge;
 }
 
-unsigned int Vertex::getCurrentFlow() {
-    unsigned int sum=0;
-    for(auto edge: this->adj){
-        sum+ edge->getFlow();
-    }
-    return sum;
+double Vertex::getLatitude() {
+    return latitude;
 }
 
-Vertex *Graph::findVertex(const string &code) const {
-    auto it = vertexSet.find(code);
+double Vertex::getLongitude() {
+    return longitude;
+}
+
+Vertex *Graph::findVertex(const unsigned int &id) const {
+    auto it = vertexSet.find(id);
 
     if(it!= vertexSet.end()){
         return it->second;
@@ -116,36 +109,36 @@ Vertex *Graph::findVertex(const string &code) const {
     return nullptr;
 }
 
-bool Graph::addVertex(unsigned int id, string code) {
-    if(findVertex(code)!= nullptr){
+bool Graph::addVertex(unsigned int id, double longitude, double latitude) {
+    if(findVertex(id)!= nullptr){
         return false;
     }
-    vertexSet.insert({code,new Vertex(id,code)});
+    vertexSet.insert({id,new Vertex(id, longitude, latitude)});
     return true;
 }
 
-bool Graph::addEdge(const string &sourceCode, const string &destCode, unsigned int capacity) {
-    auto v1 = findVertex(sourceCode);
-    auto v2 = findVertex(destCode);
+bool Graph::addEdge(const unsigned int &sourceId, const unsigned int &destId, double distance) {
+    auto v1 = findVertex(sourceId);
+    auto v2 = findVertex(destId);
     if(v1 == nullptr|| v2 == nullptr){
         return false;
     }
-    v1->addEdge(v2,capacity);
+    v1->addEdge(v2,distance);
     return true;
 }
 
-map<string, Vertex *> Graph::getVertexSet() {
+map<unsigned int, Vertex *> Graph::getVertexSet() {
     return vertexSet;
 }
 
 
-bool Graph::removeVertex(string code) {
+bool Graph::removeVertex(unsigned int id) {
     for(auto it = vertexSet.begin();it!= vertexSet.end();it++){
-        if((*it).second->getCode()== code){
+        if((*it).second->getId()== id){
             auto v = *it;
             v.second->removeOutgoingEdges();
             for(auto u: vertexSet){
-                u.second->removeEdge(v.second->getCode());
+                u.second->removeEdge(v.second->getId());
             }
             vertexSet.erase(it);
             delete v.second;
@@ -156,10 +149,10 @@ bool Graph::removeVertex(string code) {
 }
 
 //Edge
-Edge::Edge(Vertex *o, Vertex *d, unsigned int capacity) {
+Edge::Edge(Vertex *o, Vertex *d, double distance) {
     this->orig = o;
     this->dest= d;
-    this->capacity= capacity;
+    this->distance= distance;
 }
 
 Vertex *Edge::getDest() const {
@@ -170,27 +163,19 @@ Vertex *Edge::getOrig() const{
     return orig;
 }
 
-unsigned int Edge::getCapacity() const {
-    return capacity;
+double Edge::getDistance() const {
+    return distance;
 }
 
-unsigned int Edge::getFlow() {
-    return flow;
+void Edge::setCapacity(double distance_) {
+    distance = distance_;
 }
 
-void Edge::setFlow(unsigned int flow_) {
-    flow = flow_;
-}
-
-void Edge::setCapacity(unsigned int capacity_) {
-    capacity = capacity_;
-}
-
-Edge* Graph::findEdge(string codeOrigin,string codeDest){
+Edge* Graph::findEdge(int IdOrigin,int IdDest){
 
     for (auto v : vertexSet){
         for(auto e : v.second->getAdj()){
-            if(e->getOrig()->getCode() == codeOrigin && e->getDest()->getCode() == codeDest){
+            if(e->getOrig()->getId() == IdOrigin && e->getDest()->getId() == IdDest){
                 return e;
             }
         }
