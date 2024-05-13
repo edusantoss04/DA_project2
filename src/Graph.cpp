@@ -1,6 +1,19 @@
 #include <iostream>
+#include <cmath>
 #include "Graph.h"
 
+double calculateDist(double lat1, double lon1, double lat2, double lon2) {
+
+    double dLat = (lat2 - lat1) * M_PI / 180.0;
+    double dLon = (lon2 - lon1) * M_PI / 180.0;
+    lat1 = (lat1) * M_PI / 180.0;
+    lat2 = (lat2) * M_PI / 180.0;
+
+    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
+    double rad = 6371;
+    double c = 2 * asin(sqrt(a));
+    return rad * c; //in km
+}
 //Vertex
 
 void Vertex::addEdge(Vertex *dest, double distance) {
@@ -21,7 +34,7 @@ unsigned int Vertex::getId() {
     return id;
 }
 
-Edge* Vertex::getPath() {
+Vertex* Vertex::getPath() {
     return path;
 }
 
@@ -39,8 +52,12 @@ void Vertex::setVisited(bool visited) {
     this->visited= visited;
 }
 
-void Vertex::setPath(Edge* edj) {
-    this->path = edj;
+void Vertex::setPath(Vertex *path){
+    this->path = path;
+}
+
+void Vertex::setDist(double dist) {
+    this->dist= dist;
 }
 
 vector<Edge*> &Vertex::getAdj() {     //*
@@ -100,6 +117,14 @@ double Vertex::getLongitude() {
     return longitude;
 }
 
+double Vertex::getDist() {
+    return dist;
+}
+
+bool Vertex::operator<(Vertex & vertex) const {
+    return this->dist < vertex.dist;
+}
+
 Vertex *Graph::findVertex(const unsigned int &id) const {
     auto it = vertexSet.find(id);
 
@@ -146,6 +171,78 @@ bool Graph::removeVertex(unsigned int id) {
         }
     }
     return false;
+}
+
+map< unsigned int, Vertex* > Graph::MSTprims() {
+    // Check if the graph is empty
+    if (vertexSet.empty()) {
+        return vertexSet; // Return an empty set if the graph is empty
+    }
+// Initialize the vertices in the graph
+    for(auto v : vertexSet) {
+        v.second->setPath(nullptr); // Set path to null
+        v.second->setVisited(false); // Mark as not visited
+        v.second->setDist(INF);
+    }
+// Select the first vertex as the starting point
+    Vertex* s = vertexSet.begin()->second;
+    s->setDist(0); // Set distance of the starting vertex to 0
+
+// Priority queue to store vertices based on their distances
+    MutablePriorityQueue<Vertex> q;
+    q.insert(s);
+
+// Main loop for the Prim's algorithm
+    while(!q.empty() ) {
+        double weight = 0;
+        auto v = q.extractMin();
+
+        v->setVisited(true);
+
+        for(auto &w : vertexSet) { // vai iterar por todos os vértices porque também temos de considerar aqueles que não têm uma edge
+            if (!w.second->isVisited()) { //para todos os vértices que ainda não foram visitados
+
+                for (auto e: v->getAdj()){
+                    if (e->getDest() == w.second){
+                        weight = e->getDistance(); // se ele existir vai ser esse o peso
+                        break;
+                    }
+                }
+                if (weight == 0) weight = calculateDist(v->getLatitude(), v->getLongitude(), w.second->getLatitude(), w.second->getLongitude());
+                // se não existir é a distância
+
+                double oldDist = w.second->getDist();
+                if(weight < oldDist) {
+                    w.second->setDist(weight);
+                    w.second->setPath(v);
+                    if (oldDist == INF) {
+                        q.insert(w.second);
+                    }
+                    else {
+                        q.decreaseKey(w.second);
+                    }
+                }
+            }
+        }
+    }
+// Return the set of vertices after the Prim's algorithm completes
+    return vertexSet;
+
+}
+
+void Graph :: preOrderVisit(unsigned int id, std::vector<Vertex*> &visitedNodes) {
+    auto v= findVertex(id);
+    if (v == nullptr) {
+        return;
+    }
+
+    visitedNodes.push_back(v);
+
+    for (auto w: vertexSet) {
+        if (w.second->getPath() == v) {
+            preOrderVisit(w.second->getId(), visitedNodes);
+        }
+    }
 }
 
 //Edge
