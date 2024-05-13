@@ -2,6 +2,9 @@
 #include "DataManip.h"
 #include <vector>
 #include <limits>
+#include <cmath>
+#include <unordered_set>
+
 using namespace std;
 DataManip::DataManip() {}
 
@@ -127,7 +130,18 @@ void DataManip::readNodes(string filename) {
     } else
         cout << "Could not open the file\n";
 }
+double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
+    double dLat = (lat2 - lat1) * M_PI / 180.0;
+    double dLon = (lon2 - lon1) * M_PI / 180.0;
+    lat1 = (lat1) * M_PI / 180.0;
+    lat2 = (lat2) * M_PI / 180.0;
+
+    double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
+    double rad = 6371;
+    double c = 2 * asin(sqrt(a));
+    return rad * c; //in km
+}
 bool DataManip::Solution(const vector<int>& path) {
     if (path.size() != graph_.getVertexSet().size()) {
         return false;
@@ -177,6 +191,74 @@ void DataManip::RecursiveBackTracking(vector<int>& path, int currCost, int currP
         }
         return;
     }
+}
+
+
+double DataManip::TriangularApprox(vector<int> &path) {
+    //1. Executar o Prims para calcular o MST
+    graph_.MSTprims();
+
+    //2. Executar uma Visita pré ordem
+    vector<Vertex*> minPath;
+    graph_.preOrderVisit(0,minPath);
+
+    // 3. Construir o tour H a partir do caminho pré-ordem
+    vector<int> tour;
+    unordered_set<int> visited;
+
+    visited.insert(minPath[0]->getId());
+
+    tour.push_back(minPath[0]->getId());
+
+    for (int i = 1; i < minPath.size(); ++i) {
+        if (visited.find(minPath[i]->getId()) == visited.end()) {
+            tour.push_back(minPath[i]->getId());
+            visited.insert(minPath[i]->getId());
+        }
+    }
+
+    path = tour;
+
+    // 4. Calcular o custo do tour
+    double cost = CalculateTourCost(path);
+
+    return cost;
+}
+
+double DataManip::CalculateTourCost(vector<int> &path) {
+    double tourCost = 0.0;
+
+
+    Vertex* previousVertex = graph_.findVertex(path[0]);
+    for (size_t i = 1; i < path.size(); ++i) {
+
+        Vertex* currentVertex = graph_.findVertex(path[i]);
+
+        Edge* edge = graph_.findEdge(previousVertex->getId(), currentVertex->getId());
+
+        if (edge != nullptr) {
+            tourCost += edge->getDistance();
+        } else {
+            tourCost += calculateDistance(previousVertex->getLatitude(), previousVertex->getLongitude(),
+                                          currentVertex->getLatitude(), currentVertex->getLongitude());
+        }
+
+        previousVertex = currentVertex;
+    }
+
+    Vertex* lastVertex = graph_.findVertex(path.back());
+    Vertex* firstVertex = graph_.findVertex(path.front());
+
+    Edge* edge = graph_.findEdge(lastVertex->getId(), firstVertex->getId());
+
+    if (edge != nullptr) {
+        tourCost += edge->getDistance();
+    } else {
+        tourCost += calculateDistance(lastVertex->getLatitude(), lastVertex->getLongitude(),
+                                      firstVertex->getLatitude(), firstVertex->getLongitude());
+    }
+
+    return tourCost;
 }
 Graph DataManip::getGraph() {
     return graph_;

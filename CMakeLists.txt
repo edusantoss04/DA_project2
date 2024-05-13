@@ -10,4 +10,5 @@ add_executable(DA_project2
         src/Graph.cpp
         src/Menu.h
         src/Menu.cpp
+        src/MutablePriorityQueue.h
 )

@@ -8,11 +8,17 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "MutablePriorityQueue.h"
+
 
 using namespace std;
 class Edge;
 class Graph;
 class Vertex;
+#include <limits>
+
+// Definição de INF
+const int INF = std::numeric_limits<int>::max();
 
 /**
  * @class Vertex
@@ -28,11 +34,11 @@ class Vertex{
     bool visited;
     bool processing;
     unsigned indegree;
-    Edge* path;
-
+    Vertex *path = nullptr;
+    double dist = 0;
 
 public:
-
+    int queueIndex = 0;
     /**
      * @brief Constructor for Vertex class.
      * @param id Identifier of the vertex.
@@ -62,7 +68,6 @@ public:
      * @brief Get the path associated with the vertex.
      * @return Pointer to the path.
      */
-    Edge* getPath();
 
     /**
      * @brief Get the longitude of the vertex.
@@ -75,6 +80,10 @@ public:
      * @return Latitude of the vertex.
      */
     double getLatitude();
+
+    double getDist();
+
+    Vertex* getPath();
 
     /**
      * @brief Check if the vertex has been visited.
@@ -99,7 +108,9 @@ public:
      * @brief Get the outgoing edges from the vertex.
      * @return Reference to the vector of outgoing edges.
      */
-    void setPath(Edge* edj);
+    void setPath(Vertex *path);
+
+    void setDist(double dist);
 
     /**
     * @brief Add an outgoing edge from the vertex to another vertex.
@@ -125,6 +136,9 @@ public:
      * @param edge Pointer to the edge to be deleted.
      */
     void deleteEdge(Edge *edge);
+
+    bool operator<(Vertex & vertex) const;
+
 
 };
 
@@ -179,6 +193,10 @@ public:
      * @return Pointer to the edge if found, nullptr otherwise.
      */
     Edge* findEdge(int idOrigin,int idDest);
+
+    map< unsigned int, Vertex* > MSTprims();
+
+    void preOrderVisit(unsigned int id, std::vector<Vertex*> &visitedNodes);
 
 };
 

@@ -25,16 +25,21 @@ public:
     void readTourism(string filename);
     void readEdges(string filename);
     void readNodes(string filename);
+
+
+    //Backtracking
     void RecursiveBackTracking(vector<int>& path,int currCost, int currPos);
     bool Solution(const std::vector<int>& path);
     bool Bound(int currCost);
-    /**
-     * @brief Get the graph representing connections between cities, stations, and reservoirs.
-     *
-     * @return Graph representing connections.
-     */
+
+
+    //TriangularApprox
+    double TriangularApprox(vector<int>&path);
+    double CalculateTourCost(vector<int>&path);
+
     Graph getGraph();
 };
+
 
 
 #endif //DA_PROJECT2_DATAMANIP_H
