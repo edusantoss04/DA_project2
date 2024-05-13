@@ -72,7 +72,7 @@ void DataManip::readEdges(string filename) {
     if (in.is_open()) {
 
         while(getline(in, line)){
-            if (line == "origem,destino,distancia") {
+            if (line == "origem,destino,distancia"||line == "origem,destino,haversine_distance") {
                 std::getline(in, line);
             }
 
@@ -158,11 +158,11 @@ bool DataManip::Solution(const vector<int>& path) {
     return false;
 }
 
-bool DataManip::Bound(int currCost) {
+bool DataManip::Bound(double currCost) {
     return currCost < bestCost;
 }
 
-void DataManip::RecursiveBackTracking(vector<int>& path, int currCost, int currPos) {
+void DataManip::RecursiveBackTracking(vector<int>& path, double currCost, int currPos) {
 
     for (Edge* edge : graph_.findVertex(currPos)->getAdj()) {
         int nextVertex = edge->getDest()->getId();
@@ -259,6 +259,72 @@ double DataManip::CalculateTourCost(vector<int> &path) {
     }
 
     return tourCost;
+}
+
+
+double DataManip::NearestNeighborApprox(vector<int> &path) {
+    // Inicia a partir do primeiro vértice como o atual
+    Vertex* currentVertex = graph_.findVertex(0);
+
+    // Inicializa o caminho com o primeiro vértice
+    vector<int> tour;
+    tour.push_back(currentVertex->getId());
+
+    // Conjunto para manter controle dos vértices visitados
+    unordered_set<int> visited;
+    visited.insert(currentVertex->getId());
+
+    // Repete até que todos os vértices tenham sido visitados
+    while (visited.size() < graph_.getVertexSet().size()) {
+        double minDistance = numeric_limits<double>::max();
+        Vertex* nextVertex = nullptr;
+
+        // Encontra o vizinho mais próximo não visitado
+        for (Edge* edge : currentVertex->getAdj()) {
+            Vertex* neighbor = edge->getDest();
+            if (visited.find(neighbor->getId()) == visited.end() && edge->getDistance() < minDistance) {
+                minDistance = edge->getDistance();
+                nextVertex = neighbor;
+            }
+        }
+
+        // Se não houver vizinho alcançável, calcule a distância para o vértice mais próximo não visitado
+        if (nextVertex == nullptr) {
+            for (auto v : graph_.getVertexSet()) {
+                if (visited.find(v.second->getId()) == visited.end()) {
+                    double distance = calculateDistance(currentVertex->getLatitude(), currentVertex->getLongitude(),
+                                                        v.second->getLatitude(), v.second->getLongitude());
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nextVertex = v.second;
+                    }
+                }
+            }
+        }
+
+        // Adiciona o próximo vértice ao caminho e marca como visitado
+        if (nextVertex != nullptr) {
+            tour.push_back(nextVertex->getId());
+            visited.insert(nextVertex->getId());
+            currentVertex = nextVertex;
+        }
+    }
+
+    // Adiciona a distância do último vértice de volta ao primeiro vértice para fechar o ciclo
+    Vertex* lastVertex = graph_.findVertex(tour.back());
+    Vertex* firstVertex = graph_.findVertex(tour.front());
+    Edge* edge = graph_.findEdge(lastVertex->getId(), firstVertex->getId());
+    if (edge != nullptr) {
+        tour.push_back(firstVertex->getId());
+    }
+
+    // Calcula o custo total do tour
+    double cost = CalculateTourCost(tour);
+
+    // Atualiza o vetor de caminho de saída
+    path = tour;
+
+    return cost;
 }
 Graph DataManip::getGraph() {
     return graph_;
