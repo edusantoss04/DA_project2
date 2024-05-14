@@ -4,6 +4,7 @@
 #include <limits>
 #include <cmath>
 #include <unordered_set>
+#include <stack>
 
 using namespace std;
 DataManip::DataManip() {}
@@ -261,7 +262,7 @@ double DataManip::CalculateTourCost(vector<int> &path) {
     return tourCost;
 }
 
-
+/*
 double DataManip::NearestNeighborApprox(vector<int> &path) {
     // Inicia a partir do primeiro vértice como o atual
     Vertex* currentVertex = graph_.findVertex(0);
@@ -326,6 +327,7 @@ double DataManip::NearestNeighborApprox(vector<int> &path) {
 
     return cost;
 }
+*/
 Graph DataManip::getGraph() {
     return graph_;
 }

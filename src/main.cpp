@@ -16,11 +16,11 @@ int main(){
 
     //...........TOY GRAPHS.........
     //data.readTourism("../Toy-Graphs/tourism.csv");
-    data.readEdges("../Toy-Graphs/stadiums.csv");
+    //data.readEdges("../Toy-Graphs/stadiums.csv");
     //data.readEdges("../Toy-Graphs/shipping.csv");
 
     //..............Extra_Fully............
-    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_500.csv");
+    data.readEdges("../Extra_Fully_Connected_Graphs/edges_25.csv");
     //data.readEdges("../Extra_Fully_Connected_Graphs/edges_900.csv");
     //data.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
 
@@ -75,7 +75,7 @@ int main(){
 
 */
     //.....................................2.TESTAR TriangularApprox .............................
-/*
+
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
     double minCost = data.TriangularApprox(path);
@@ -93,12 +93,12 @@ int main(){
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 
-*/
+
     //............3.TESTAR HEURISTICAS...............
-/*
+    /*
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
-    double minCost = data.NearestNeighborApprox(path);
+    double minCost = data.Christofides(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
@@ -112,6 +112,6 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-*/
+    */
     return 0;
 }

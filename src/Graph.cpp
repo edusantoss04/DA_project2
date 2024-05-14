@@ -16,10 +16,11 @@ double calculateDist(double lat1, double lon1, double lat2, double lon2) {
 }
 //Vertex
 
-void Vertex::addEdge(Vertex *dest, double distance) {
+Edge * Vertex::addEdge(Vertex *dest, double distance) {
     auto newEdge = new Edge(this, dest, distance);
     adj.push_back(newEdge);
     dest->incoming.push_back(newEdge);
+    return newEdge;
 }
 
 //constructor
@@ -279,3 +280,53 @@ Edge* Graph::findEdge(int IdOrigin,int IdDest){
     }
     return nullptr;
 }
+/*
+vector<Vertex*> Graph::findOddDegree() {
+    std::vector<Vertex*> oddVertices;
+    for (auto vertex: vertexSet) {
+        if (vertex.second->getIncoming().size() % 2 != 0) {
+            oddVertices.push_back(vertex.second);
+        }
+    }
+    return oddVertices;
+}
+std::set<Edge*> Graph::perfectMatching(const std::vector<Vertex*>& oddVertices) {
+    std::set<Edge*> matching;
+
+    // Implementação simples: emparelha cada vértice ímpar com o mais próximo
+    for (size_t i = 0; i < oddVertices.size(); ++i) {
+        Vertex* v1 = oddVertices[i];
+        Vertex* closestVertex = nullptr;
+        double minDistance = std::numeric_limits<double>::max();
+
+        for (size_t j = 0; j < oddVertices.size(); ++j) {
+            if (i != j) {
+                Vertex* v2 = oddVertices[j];
+                double distance = calculateDist(v1->getLatitude(), v1->getLongitude(),
+                                                    v2->getLatitude(), v2->getLongitude());
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestVertex = v2;
+                }
+            }
+        }
+
+        // Cria uma aresta entre os dois vértices para o emparelhamento
+        v1->addEdge(closestVertex, minDistance);
+        Edge* edge = nullptr;
+        for (Edge* e : v1->getAdj()) {
+            if (e->getDest() == closestVertex) {
+                edge = e;
+                break;
+            }
+        }
+
+// Verifica se a aresta foi encontrada e a adiciona ao conjunto de emparelhamento
+        if (edge != nullptr) {
+            matching.insert(edge);
+        }
+    }
+
+    return matching;
+}
+ */

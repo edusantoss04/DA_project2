@@ -16,6 +16,7 @@ class Edge;
 class Graph;
 class Vertex;
 #include <limits>
+#include <set>
 
 // Definição de INF
 const int INF = std::numeric_limits<int>::max();
@@ -117,7 +118,7 @@ public:
     * @param dest Pointer to the destination vertex.
     * @param capacity Capacity of the edge.
     */
-    void addEdge(Vertex* dest, double distance);
+    Edge *addEdge(Vertex* dest, double distance);
 
     /**
      * @brief Remove all outgoing edges from the vertex.
@@ -198,6 +199,9 @@ public:
 
     void preOrderVisit(unsigned int id, std::vector<Vertex*> &visitedNodes);
 
+    vector<Vertex*> findOddDegree();
+
+    set<Edge*> perfectMatching(const std::vector<Vertex*>& oddVertices);
 };
 
 /**
