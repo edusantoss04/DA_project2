@@ -15,7 +15,7 @@ int main(){
     //....................................Escolher ficheiro para ler .................................
 
     //...........TOY GRAPHS.........
-    //data.readTourism("../Toy-Graphs/tourism.csv");
+     //data.readTourism("../Toy-Graphs/tourism.csv");
     //data.readEdges("../Toy-Graphs/stadiums.csv");
     //data.readEdges("../Toy-Graphs/shipping.csv");
 
@@ -75,7 +75,7 @@ int main(){
 
 */
     //.....................................2.TESTAR TriangularApprox .............................
-
+    /*
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
     double minCost = data.TriangularApprox(path);
@@ -92,13 +92,14 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-
+    */
 
     //............3.TESTAR HEURISTICAS...............
-    /*
+
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
-    double minCost = data.Christofides(path);
+    data.RandomApprox(path);
+    double minCost = data.simulatedAnnealing(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
@@ -112,6 +113,6 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-    */
+
     return 0;
 }

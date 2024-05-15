@@ -5,6 +5,9 @@
 #include <cmath>
 #include <unordered_set>
 #include <stack>
+#include <random>
+#include <chrono>
+#include <algorithm>
 
 using namespace std;
 DataManip::DataManip() {}
@@ -228,7 +231,7 @@ double DataManip::TriangularApprox(vector<int> &path) {
 
 double DataManip::CalculateTourCost(vector<int> &path) {
     double tourCost = 0.0;
-
+    if(path.empty())return 0.0;
 
     Vertex* previousVertex = graph_.findVertex(path[0]);
     for (size_t i = 1; i < path.size(); ++i) {
@@ -262,62 +265,44 @@ double DataManip::CalculateTourCost(vector<int> &path) {
     return tourCost;
 }
 
-/*
+
 double DataManip::NearestNeighborApprox(vector<int> &path) {
     // Inicia a partir do primeiro vértice como o atual
     Vertex* currentVertex = graph_.findVertex(0);
 
     // Inicializa o caminho com o primeiro vértice
     vector<int> tour;
+    tour.reserve(graph_.getVertexSet().size());
     tour.push_back(currentVertex->getId());
 
-    // Conjunto para manter controle dos vértices visitados
-    unordered_set<int> visited;
-    visited.insert(currentVertex->getId());
+    // Marca o primeiro vértice como visitado
+    vector<bool> visited(graph_.getVertexSet().size(), false);
+    visited[currentVertex->getId()] = true;
 
     // Repete até que todos os vértices tenham sido visitados
-    while (visited.size() < graph_.getVertexSet().size()) {
+    while (tour.size() < graph_.getVertexSet().size()) {
         double minDistance = numeric_limits<double>::max();
         Vertex* nextVertex = nullptr;
 
         // Encontra o vizinho mais próximo não visitado
         for (Edge* edge : currentVertex->getAdj()) {
             Vertex* neighbor = edge->getDest();
-            if (visited.find(neighbor->getId()) == visited.end() && edge->getDistance() < minDistance) {
+            if (!visited[neighbor->getId()] && edge->getDistance() < minDistance) {
                 minDistance = edge->getDistance();
                 nextVertex = neighbor;
-            }
-        }
-
-        // Se não houver vizinho alcançável, calcule a distância para o vértice mais próximo não visitado
-        if (nextVertex == nullptr) {
-            for (auto v : graph_.getVertexSet()) {
-                if (visited.find(v.second->getId()) == visited.end()) {
-                    double distance = calculateDistance(currentVertex->getLatitude(), currentVertex->getLongitude(),
-                                                        v.second->getLatitude(), v.second->getLongitude());
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        nextVertex = v.second;
-                    }
-                }
             }
         }
 
         // Adiciona o próximo vértice ao caminho e marca como visitado
         if (nextVertex != nullptr) {
             tour.push_back(nextVertex->getId());
-            visited.insert(nextVertex->getId());
+            visited[nextVertex->getId()] = true;
             currentVertex = nextVertex;
         }
     }
 
     // Adiciona a distância do último vértice de volta ao primeiro vértice para fechar o ciclo
-    Vertex* lastVertex = graph_.findVertex(tour.back());
-    Vertex* firstVertex = graph_.findVertex(tour.front());
-    Edge* edge = graph_.findEdge(lastVertex->getId(), firstVertex->getId());
-    if (edge != nullptr) {
-        tour.push_back(firstVertex->getId());
-    }
+    tour.push_back(tour.front());
 
     // Calcula o custo total do tour
     double cost = CalculateTourCost(tour);
@@ -327,7 +312,90 @@ double DataManip::NearestNeighborApprox(vector<int> &path) {
 
     return cost;
 }
-*/
+
+
+
+
+
+double DataManip::simulatedAnnealing(vector<int>& path, double initialTemperature,
+                                     double coolingRate){
+    int maxIterations = 5*graph_.getVertexSet().size() * graph_.getVertexSet().size();
+    // Inicializa o caminho atual e o melhor caminho
+    vector<int> currentPath = path;
+    bestPath= currentPath;
+
+    // Inicializa o custo atual e o melhor custo
+    double currentCost = CalculateTourCost(currentPath);
+    bestCost= currentCost;
+
+    // Inicializa a temperatura mínima
+    const double minTemperature = 1e-6;
+    double temperature = initialTemperature;
+
+    // Inicializa o gerador de números aleatórios com uma semente baseada no relógio do sistema
+    std::mt19937 gen(chrono::system_clock::now().time_since_epoch().count());
+    std::uniform_int_distribution<int> randDist(1, graph_.getVertexSet().size() - 1); // Modificado para incluir o índice 0
+    std::uniform_real_distribution<double> probDist(0.0, 1.0);
+    // Itera até que a temperatura atinja o mínimo
+    while(temperature > minTemperature){
+        for(int i = 0; i < maxIterations; i++){
+            // Gera um vizinho aleatório
+            vector<int> neighborPath = currentPath;
+            int index1 = randDist(gen);
+            int index2 = randDist(gen);
+            while(index1 == index2){
+                index2 = randDist(gen);
+            }
+
+            // Troca os elementos nos índices index1 e index2
+            swap(neighborPath[index1], neighborPath[index2]);
+
+            // Calcula o custo do novo caminho
+            double newCost = CalculateTourCost(neighborPath);
+
+            // Calcula a probabilidade de aceitação
+            double acceptanceProbability = exp((currentCost - newCost) / temperature);
+
+            // Aceita o vizinho se for melhor ou com uma certa probabilidade se for pior
+            if(newCost < currentCost || probDist(gen) < acceptanceProbability){
+                currentPath = neighborPath;
+                currentCost = newCost;
+            }
+
+            // Atualiza o melhor caminho
+            if(currentCost < bestCost){
+                bestPath = currentPath;
+                bestCost = currentCost;
+            }
+        }
+
+        // Resfria a temperatura
+        temperature *= coolingRate;
+    }
+    cout << "Melhor custo: " << bestCost << endl;
+
+    // Atualiza o caminho de entrada com o melhor caminho encontrado
+    path = bestPath;
+    return bestCost;
+}
+double DataManip::RandomApprox(vector<int> &path) {
+    // Inicializa o caminho com os vértices na ordem original
+    vector<int> tour(graph_.getVertexSet().size());
+    iota(tour.begin(), tour.end(), 0); // Preenche o vetor com os índices dos vértices
+
+    // Embaralha os índices aleatoriamente
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(tour.begin(), tour.end(), g);
+
+    // Calcula o custo total do tour
+    double cost = CalculateTourCost(tour);
+
+    // Atualiza o vetor de caminho de saída
+    path = tour;
+
+    return cost;
+}
 Graph DataManip::getGraph() {
     return graph_;
 }

@@ -41,8 +41,9 @@ public:
 
     //Other heuristics
     double NearestNeighborApprox(vector<int> &path);
-    double Christofides(vector<int> &path);
-
+    double simulatedAnnealing(vector<int>& path, double initialTemperature = 5000.0,
+                              double coolingRate = 0.95);
+    double RandomApprox(vector<int> &path);
     Graph getGraph();
 };
 
