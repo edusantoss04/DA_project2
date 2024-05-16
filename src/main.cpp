@@ -10,14 +10,14 @@ int main(){
 
     DataManip data;
 
-    auto begin = std::chrono::high_resolution_clock::now();
+    //auto begin = std::chrono::high_resolution_clock::now();
 
     Menu menu = Menu(data);
     menu.MainMenu();
     //....................................Escolher ficheiro para ler .................................
 
     //...........TOY GRAPHS.........
-    //data.readTourism("../Toy-Graphs/tourism.csv");
+     //data.readTourism("../Toy-Graphs/tourism.csv");
     //data.readEdges("../Toy-Graphs/stadiums.csv");
     //data.readEdges("../Toy-Graphs/shipping.csv");
 
@@ -100,13 +100,15 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+<<<<<<< HEAD
 
 */
     //............3.TESTAR HEURISTICAS...............
-    /*
+
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
-    double minCost = data.Christofides(path);
+    data.RandomApprox(path);
+    double minCost = data.simulatedAnnealing(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
@@ -120,6 +122,6 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-    */
+
     return 0;
 }
