@@ -14,9 +14,16 @@ public:
 
     void MainMenu();
 
+    void ChooseMenu();
     void ToyMenu();
     void ExtraMenu();
     void RealMenu();
+
+    void DisplayBacktracking();
+    void DisplayTriangularApprox();
+    //void DisplayHeuristics();
+
+    void ChooseEdges();
 
     /*void maxWater();
     void deficitPerCity();

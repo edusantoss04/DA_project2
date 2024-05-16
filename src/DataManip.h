@@ -40,8 +40,8 @@ public:
 
 
     //Other heuristics
-    double NearestNeighborApprox(vector<int> &path);
-    double Christofides(vector<int> &path);
+    //double NearestNeighborApprox(vector<int> &path);
+    //double Christofides(vector<int> &path);
 
     Graph getGraph();
 };
