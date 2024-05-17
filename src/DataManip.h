@@ -25,8 +25,8 @@ public:
     void readTourism(string filename);
     void readEdges(string filename);
     void readNodes(string filename);
-
-
+    void readToy(string filename);
+    void readEdgesLarge(string filename);
     //Backtracking
     void RecursiveBackTracking(vector<int>& path,double currCost, int currPos);
     bool Solution(const std::vector<int>& path);
@@ -40,10 +40,11 @@ public:
 
 
     //Other heuristics
-    double NearestNeighborApprox(vector<int> &path);
-    double simulatedAnnealing(vector<int>& path, double initialTemperature = 5000.0,
-                              double coolingRate = 0.95);
-    double RandomApprox(vector<int> &path);
+    double NearestNeighborApprox(vector< int> &path);
+    //double simulatedAnnealing(vector<int>& path, double initialTemperature = 5000.0,
+                             // double coolingRate = 0.95);
+
+    double christofides(std::vector<int> &path);
     Graph getGraph();
 };
 

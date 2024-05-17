@@ -12,30 +12,33 @@ int main(){
 
     //auto begin = std::chrono::high_resolution_clock::now();
 
-    Menu menu = Menu(data);
-    menu.MainMenu();
+    //Menu menu = Menu(data);
+    //menu.MainMenu();
     //....................................Escolher ficheiro para ler .................................
 
     //...........TOY GRAPHS.........
-     //data.readTourism("../Toy-Graphs/tourism.csv");
-    //data.readEdges("../Toy-Graphs/stadiums.csv");
-    //data.readEdges("../Toy-Graphs/shipping.csv");
+    //data.readTourism("../Toy-Graphs/tourism.csv");
+    //data.readToy("../Toy-Graphs/stadiums.csv");
+    //data.readToy("../Toy-Graphs/shipping.csv");
 
     //..............Extra_Fully............
-    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_25.csv");
-    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_900.csv");
     //data.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
+    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_25.csv");
+    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_100.csv");
+
 
 
     //................Real-World..........
-    //data.readEdges("../Real-world Graphs/graph1/edges.csv");
     //data.readNodes("../Real-world Graphs/graph1/nodes.csv");
+    //data.readEdgesLarge("../Real-world Graphs/graph1/edges.csv");
 
-    //data.readEdges("../Real-world Graphs/graph2/edges.csv");
-    //data.readNodes("../Real-world Graphs/graph2/nodes.csv");
+    data.readNodes("../Real-world Graphs/graph2/nodes.csv");
+    data.readEdgesLarge("../Real-world Graphs/graph2/edges.csv");
 
-    //data.readEdges("../Real-world Graphs/graph3/edges.csv");
     //data.readNodes("../Real-world Graphs/graph3/nodes.csv");
+    //data.readEdgesLarge("../Real-world Graphs/graph3/edges.csv");
+
+
 
     //....................................TEMPO LEITURAS .................................
     /*auto end = std::chrono::high_resolution_clock::now();
@@ -46,14 +49,17 @@ int main(){
     //....................................TESTAR LEITURAS .................................
     /*
     for (auto v: data.getGraph().getVertexSet()){
+        if(v.first > 3){
+            break;
+        }
         cout << v.first << endl;
         for(auto e : v.second->getAdj()){
-            cout << "com destino " << e->getDest()->getId() << " a uma distancia de "  << e->getDistance() << endl;
+            cout << "com destino " << e.second->getDest()->getId() << " a uma distancia de "  << e.second->getDistance() << endl;
         }
     }
+    */
 
 
-*/
     //.....................................1.TESTAR BACKTRACKING ...........................
 /*
     vector<int> path;
@@ -83,7 +89,7 @@ int main(){
 
 */
     //.....................................2.TESTAR TriangularApprox .............................
-/*
+    /*
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
     double minCost = data.TriangularApprox(path);
@@ -100,15 +106,14 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-<<<<<<< HEAD
+    */
 
-*/
+
     //............3.TESTAR HEURISTICAS...............
 
-    auto begin = std::chrono::high_resolution_clock::now();
+    auto begin   = std::chrono::high_resolution_clock::now();
     vector<int> path;
-    data.RandomApprox(path);
-    double minCost = data.simulatedAnnealing(path);
+    double minCost = data.NearestNeighborApprox(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
@@ -117,10 +122,11 @@ int main(){
     cout << "You should take the following path: " << endl;
 
     for (int i = 0; i < data.getGraph().getVertexSet().size(); i++) {
-        cout << " " << path[i] << " ->";
+        cout << " " << path[i]<< " ->";
     }
     cout << " " << path[0] << endl << endl;
-
+    cout << path.size()<<endl;
+    cout << data.getGraph().getNumVertex();
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 
     return 0;

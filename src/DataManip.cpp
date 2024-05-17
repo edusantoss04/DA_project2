@@ -22,7 +22,7 @@ int DataManip::getBestCost() const {
 void DataManip::readTourism(string filename) {
 
     ifstream in(filename);
-    unsigned int destino, origem;
+    int destino, origem;
     string labelo,labeld;
     double distancia;
     string line;
@@ -48,29 +48,22 @@ void DataManip::readTourism(string filename) {
             iss>>labeld;
 
 
-            if(graph_.findVertex(origem)== nullptr){
-                graph_.addVertex(origem,0,0);
-            }
-            if(graph_.findVertex(destino)== nullptr){
-                graph_.addVertex(destino,0,0);
-            }
-            graph_.addEdge(origem, destino, distancia);
-            graph_.addEdge(destino, origem, distancia);
+
+            graph_.addVertex(origem,0,0);
+            graph_.addVertex(destino,0,0);
+            graph_.addBidirectionalEdge(origem, destino, distancia);
 
         }
 
     } else
         cout << "Could not open the file\n";
 }
-void DataManip::readEdges(string filename) {
-
+void DataManip::readToy(std::string filename) {
     ifstream in(filename);
-    unsigned int destino, origem;
+
+    int destino, origem;
     double distancia;
     string line;
-
-
-    // Verifica se a primeira linha é "origem,destino,distancia"
 
 
     if (in.is_open()) {
@@ -89,15 +82,9 @@ void DataManip::readEdges(string filename) {
             iss.ignore();
             iss >> distancia;
 
-
-            if(graph_.findVertex(origem)== nullptr){
-                graph_.addVertex(origem,0,0);
-            }
-            if(graph_.findVertex(destino)== nullptr){
-                graph_.addVertex(destino,0,0);
-            }
-            graph_.addEdge(origem, destino, distancia);
-            graph_.addEdge(destino, origem, distancia);
+            graph_.addVertex(origem,0,0);
+            graph_.addVertex(destino,0,0);
+            graph_.addBidirectionalEdge(origem, destino, distancia);
 
         }
 
@@ -105,10 +92,71 @@ void DataManip::readEdges(string filename) {
         cout << "Could not open the file\n";
 }
 
+void DataManip::readEdges(string filename) {
+
+    ifstream in(filename);
+     int destino, origem;
+    double distancia;
+    string line;
+
+    // Verifica se a primeira linha é "origem,destino,distancia"
+
+    if (in.is_open()) {
+
+        while(getline(in, line)){
+            if (line == "origem,destino,distancia"||line == "origem,destino,haversine_distance") {
+                std::getline(in, line);
+            }
+
+            istringstream iss(line);
+            iss >> origem;
+
+            iss.ignore();
+            iss >> destino;
+
+            iss.ignore();
+            iss >> distancia;
+            graph_.addVertex(origem,0,0);
+            graph_.addVertex(destino,0,0);
+            graph_.addBidirectionalEdge(origem, destino, distancia);
+
+        }
+
+    } else
+        cout << "Could not open the file\n";
+}
+void DataManip::readEdgesLarge(string filename) {
+
+    ifstream in(filename);
+     int destino, origem;
+    double distancia;
+    string line;
+
+    // Verifica se a primeira linha é "origem,destino,distancia"
+
+    if (in.is_open()) {
+        std::getline(in, line);
+        while(getline(in, line)){
+
+            istringstream iss(line);
+            iss >> origem;
+
+            iss.ignore();
+            iss >> destino;
+
+            iss.ignore();
+            iss >> distancia;
+            graph_.addBidirectionalEdge(origem, destino, distancia);
+
+        }
+
+    } else
+        cout << "Could not open the file\n";
+}
 void DataManip::readNodes(string filename) {
 
     ifstream in(filename);
-    unsigned int id;
+    int id;
     double longitude, latitude;
     string line;
 
@@ -153,7 +201,8 @@ bool DataManip::Solution(const vector<int>& path) {
 
     int finalVertex = path.back();
     int startVertex = 0;
-    for (Edge* edge : graph_.findVertex(finalVertex)->getAdj()) {
+    for (auto pair : graph_.findVertex(finalVertex)->getAdj()) {
+        Edge* edge = pair.second;
         if (edge->getDest()->getId() == startVertex) {
             return true;
         }
@@ -168,7 +217,8 @@ bool DataManip::Bound(double currCost) {
 
 void DataManip::RecursiveBackTracking(vector<int>& path, double currCost, int currPos) {
 
-    for (Edge* edge : graph_.findVertex(currPos)->getAdj()) {
+    for (auto pair : graph_.findVertex(currPos)->getAdj()) {
+        Edge *edge = pair.second;
         int nextVertex = edge->getDest()->getId();
         if (edge && !edge->getDest()->isVisited()) {
 
@@ -187,9 +237,11 @@ void DataManip::RecursiveBackTracking(vector<int>& path, double currCost, int cu
 
     }
     if (Solution(path)) {
-
-        if (currCost + graph_.findEdge(path.back(),path[0])->getDistance() < bestCost) {
-            bestCost = currCost + graph_.findEdge(path.back(),path[0])->getDistance();
+        auto vertex1 = graph_.findVertex(path.back());
+        auto vertex2 = graph_.findVertex(path[0]);
+        double newCost = graph_.getDistance(vertex1,vertex2);
+        if (currCost + newCost < bestCost) {
+            bestCost = currCost + newCost;
             bestPath = path;
 
         }
@@ -203,21 +255,20 @@ double DataManip::TriangularApprox(vector<int> &path) {
     graph_.MSTprims();
 
     //2. Executar uma Visita pré ordem
-    vector<Vertex*> minPath;
+    vector<int> minPath;
     graph_.preOrderVisit(0,minPath);
 
     // 3. Construir o tour H a partir do caminho pré-ordem
     vector<int> tour;
     unordered_set<int> visited;
+    visited.insert(minPath[0]);
 
-    visited.insert(minPath[0]->getId());
-
-    tour.push_back(minPath[0]->getId());
+    tour.push_back(minPath[0]);
 
     for (int i = 1; i < minPath.size(); ++i) {
-        if (visited.find(minPath[i]->getId()) == visited.end()) {
-            tour.push_back(minPath[i]->getId());
-            visited.insert(minPath[i]->getId());
+        if (visited.find(minPath[i]) == visited.end()) {
+            tour.push_back(minPath[i]);
+            visited.insert(minPath[i]);
         }
     }
 
@@ -238,10 +289,10 @@ double DataManip::CalculateTourCost(vector<int> &path) {
 
         Vertex* currentVertex = graph_.findVertex(path[i]);
 
-        Edge* edge = graph_.findEdge(previousVertex->getId(), currentVertex->getId());
 
-        if (edge != nullptr) {
-            tourCost += edge->getDistance();
+        double distance =  graph_.getDistance(previousVertex,currentVertex);
+        if (distance != 0) {
+            tourCost += distance;
         } else {
             tourCost += calculateDistance(previousVertex->getLatitude(), previousVertex->getLongitude(),
                                           currentVertex->getLatitude(), currentVertex->getLongitude());
@@ -253,10 +304,10 @@ double DataManip::CalculateTourCost(vector<int> &path) {
     Vertex* lastVertex = graph_.findVertex(path.back());
     Vertex* firstVertex = graph_.findVertex(path.front());
 
-    Edge* edge = graph_.findEdge(lastVertex->getId(), firstVertex->getId());
+    double distance1 =  graph_.getDistance(lastVertex,firstVertex);
 
-    if (edge != nullptr) {
-        tourCost += edge->getDistance();
+    if (distance1 != 0) {
+        tourCost += distance1;
     } else {
         tourCost += calculateDistance(lastVertex->getLatitude(), lastVertex->getLongitude(),
                                       firstVertex->getLatitude(), firstVertex->getLongitude());
@@ -267,59 +318,161 @@ double DataManip::CalculateTourCost(vector<int> &path) {
 
 
 double DataManip::NearestNeighborApprox(vector<int> &path) {
-    // Inicia a partir do primeiro vértice como o atual
-    Vertex* currentVertex = graph_.findVertex(0);
+    unordered_set<int> not_visited;
+    double cost = 0;
 
-    // Inicializa o caminho com o primeiro vértice
-    vector<int> tour;
-    tour.reserve(graph_.getVertexSet().size());
-    tour.push_back(currentVertex->getId());
+    // reset graph
+    for (auto v: graph_.getVertexSet()) {
+        v.second->setVisited(false);
+        not_visited.insert(v.second->getId());
+    }
 
-    // Marca o primeiro vértice como visitado
-    vector<bool> visited(graph_.getVertexSet().size(), false);
-    visited[currentVertex->getId()] = true;
+   int current_stop = 0;
+    path.push_back(current_stop);
+    graph_.findVertex(current_stop)->setVisited(true);
+    not_visited.erase(current_stop);
 
-    // Repete até que todos os vértices tenham sido visitados
-    while (tour.size() < graph_.getVertexSet().size()) {
-        double minDistance = numeric_limits<double>::max();
-        Vertex* nextVertex = nullptr;
+    while (!not_visited.empty()) {
+        bool found = false;
+        int next_stop = -1;
+        double min_distance = std::numeric_limits<double>::max();
+        Vertex *currentVertex = graph_.findVertex(current_stop);
 
-        // Encontra o vizinho mais próximo não visitado
-        for (Edge* edge : currentVertex->getAdj()) {
-            Vertex* neighbor = edge->getDest();
-            if (!visited[neighbor->getId()] && edge->getDistance() < minDistance) {
-                minDistance = edge->getDistance();
-                nextVertex = neighbor;
+        for (auto pair: currentVertex->getAdj()) {
+            Edge* edge = pair.second;
+            Vertex *vertex = edge->getDest();
+            double distance = edge->getDistance();
+
+
+            if (distance == 0) {
+                distance = calculateDistance(currentVertex->getLatitude(), currentVertex->getLongitude(), vertex->getLatitude(), vertex->getLongitude());
+            }
+
+            if (!vertex->isVisited() && distance < min_distance) {
+                next_stop = vertex->getId();
+                min_distance = distance;
+                found = true;
             }
         }
 
-        // Adiciona o próximo vértice ao caminho e marca como visitado
-        if (nextVertex != nullptr) {
-            tour.push_back(nextVertex->getId());
-            visited[nextVertex->getId()] = true;
-            currentVertex = nextVertex;
+        if (found) {
+            cost += min_distance;
+            graph_.findVertex(next_stop)->setVisited(true);
+            path.push_back(next_stop);
+            not_visited.erase(next_stop);
+            current_stop = next_stop;
+        } else {
+            break;
+        }
+    }
+    // Return to the start vertex (0)
+    path.push_back(0);
+    for (auto pair: graph_.findVertex(current_stop)->getAdj()) {
+        Edge *edge = pair.second;
+        if (edge->getDest()->getId() == 0) {
+            cost += edge->getDistance();
+            break;
         }
     }
 
-    // Adiciona a distância do último vértice de volta ao primeiro vértice para fechar o ciclo
-    tour.push_back(tour.front());
-
-    // Calcula o custo total do tour
-    double cost = CalculateTourCost(tour);
-
-    // Atualiza o vetor de caminho de saída
-    path = tour;
-
     return cost;
+}
+
+double DataManip::christofides(std::vector<int> &path) {
+    // Obter a MST usando o algoritmo de Prim
+    set<Edge*> mst = graph_.MSTprims();
+
+    // Encontrar vértices de grau ímpar
+    std::vector<Vertex*> odds = graph_.findOddDegree();
+
+    // Obter o emparelhamento perfeito dos vértices de grau ímpar
+    std::set<Edge*> matching = graph_.perfectMatching(odds);
+
+    // Combinar MST e o matching para criar um multigrafo
+    set<Edge*> combine_graph;
+    for (auto e: mst){
+        if (combine_graph.find(e)==combine_graph.end()){ // se ainda nao estiver lá
+            combine_graph.insert(e);
+            combine_graph.insert(e->getDest()->addEdge(e->getOrig(),e->getDistance()));
+            //combine_graph.insert(new Edge(e->getDest(), e->getOrig(),e->getWeight()));
+        }
+    }
+    bool reverse=false;
+    for (Edge* edge : matching) {
+        if (combine_graph.find(edge) == combine_graph.end()) {
+            combine_graph.insert(edge);
+            combine_graph.insert(edge->getDest()->addEdge(edge->getOrig(), edge->getDistance()));
+        }
+    }
+
+    // Encontrar o caminho de Euler no multigrafo
+    std::vector<Vertex*> euler_path;
+    Vertex* start = graph_.getVertexSet().begin()->second; // Assumindo que o grafo não está vazio e escolhendo um vértice inicial
+    std::stack<Vertex*> s;
+    s.push(start);
+
+    while (!combine_graph.empty()) {
+        Vertex* current = s.top();
+        Edge* next_edge = nullptr;
+
+        // Encontrar a próxima aresta no multigrafo combinada
+        for (auto pair : current->getAdj()) {
+            auto e = pair.second;
+            if (combine_graph.find(e) != combine_graph.end()) {
+                next_edge = e;
+                break;
+            }
+        }
+
+        if (next_edge != nullptr) {
+            s.push(next_edge->getDest());
+            combine_graph.erase(next_edge);
+            for (auto it = combine_graph.begin(); it != combine_graph.end(); ++it) {
+                if ((*it)->getDest() == next_edge->getOrig() && (*it)->getOrig() == next_edge->getDest()) {
+                    combine_graph.erase(it);
+                    break;
+                }
+            }
+        } else {
+            euler_path.push_back(current);
+            s.pop();
+        }
+    }
+    euler_path.push_back(start); // Completar o ciclo de Euler
+
+    // Converter o caminho de Euler em um ciclo Hamiltoniano
+    std::set<Vertex*> visited;
+    for (Vertex* vertex : euler_path) {
+        if (visited.find(vertex) == visited.end()) {
+            path.push_back(vertex->getId());
+            visited.insert(vertex);
+        }
+    }
+    path.push_back(start->getId()); // Fechar o ciclo Hamiltoniano
+
+    // Calcular o custo do ciclo Hamiltoniano
+    double min_cost = CalculateTourCost( path);
+
+    return min_cost;
+}
+
+
+
+Graph DataManip::getGraph() {
+    return graph_;
 }
 
 
 
 
 
+/*
 double DataManip::simulatedAnnealing(vector<int>& path, double initialTemperature,
                                      double coolingRate){
+
     int maxIterations = 5*graph_.getVertexSet().size() * graph_.getVertexSet().size();
+
+
     // Inicializa o caminho atual e o melhor caminho
     vector<int> currentPath = path;
     bestPath= currentPath;
@@ -378,24 +531,4 @@ double DataManip::simulatedAnnealing(vector<int>& path, double initialTemperatur
     path = bestPath;
     return bestCost;
 }
-double DataManip::RandomApprox(vector<int> &path) {
-    // Inicializa o caminho com os vértices na ordem original
-    vector<int> tour(graph_.getVertexSet().size());
-    iota(tour.begin(), tour.end(), 0); // Preenche o vetor com os índices dos vértices
-
-    // Embaralha os índices aleatoriamente
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(tour.begin(), tour.end(), g);
-
-    // Calcula o custo total do tour
-    double cost = CalculateTourCost(tour);
-
-    // Atualiza o vetor de caminho de saída
-    path = tour;
-
-    return cost;
-}
-Graph DataManip::getGraph() {
-    return graph_;
-}
+*/
