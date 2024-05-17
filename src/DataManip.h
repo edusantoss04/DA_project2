@@ -11,7 +11,7 @@ class DataManip {
 
     Graph graph_;
     vector<int> bestPath;
-    int bestCost=numeric_limits<int>::max();
+    double bestCost=numeric_limits<int>::max();
 
 
 public:
@@ -25,18 +25,26 @@ public:
     void readTourism(string filename);
     void readEdges(string filename);
     void readNodes(string filename);
-
-
+    void readToy(string filename);
+    void readEdgesLarge(string filename);
     //Backtracking
-    void RecursiveBackTracking(vector<int>& path,int currCost, int currPos);
+    void RecursiveBackTracking(vector<int>& path,double currCost, int currPos);
     bool Solution(const std::vector<int>& path);
-    bool Bound(int currCost);
+    bool Bound(double currCost);
 
 
     //TriangularApprox
     double TriangularApprox(vector<int>&path);
     double CalculateTourCost(vector<int>&path);
 
+
+
+    //Other heuristics
+    double NearestNeighborApprox(vector< int> &path);
+    //double simulatedAnnealing(vector<int>& path, double initialTemperature = 5000.0,
+                             // double coolingRate = 0.95);
+
+    double christofides(std::vector<int> &path);
     Graph getGraph();
 };
 

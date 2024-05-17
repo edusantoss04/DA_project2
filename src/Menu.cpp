@@ -1,5 +1,7 @@
 #include "Menu.h"
 #include <iostream>
+#include <chrono>
+
 using namespace std;
 
 Menu::Menu(DataManip data) {
@@ -7,6 +9,71 @@ Menu::Menu(DataManip data) {
 }
 
 void Menu::MainMenu() {
+    char inputTypeO;
+    cout << endl << endl;
+    cout << "┌────────────────────────────────────┐" << endl
+         << "│           Algorithm Menu           │" << endl
+         << "├────────────────────────────────────┤" << endl
+         << "│  1 - Backtracking                  │" << endl
+         << "│  2 - TriangularApprox              │" << endl
+         << "│  3 - Heuristics                    │" << endl
+         << "│  4 -                               │" << endl
+         << "│                                    │" << endl
+         << "│  b - back                          │" << endl
+         << "│  e - Exit                          │" << endl
+         << "└────────────────────────────────────┘" << endl
+         << endl
+         << "What would you like to do next? ";
+
+    int flag = 1;
+
+    while (flag) {
+        cout << "Choose an option: ";
+        cin >> inputTypeO;
+
+        switch (inputTypeO) {
+            case ('1'):
+
+                ChooseMenu();
+                DisplayBacktracking();
+                back();
+
+                flag = 0;
+                MainMenu();
+                break;
+
+            case ('2'):
+
+                ChooseMenu();
+                DisplayTriangularApprox();
+                back();
+
+                flag = 0;
+                MainMenu();
+                break;
+
+            case ('3'):
+
+                ChooseMenu();
+                //DisplayHeuristics();
+                back();
+
+                flag = 0;
+                MainMenu();
+                break;
+
+            case ('b'):
+                return;
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option!" << endl;
+        }
+    }
+}
+
+void Menu::ChooseMenu() {
     char option;
     cout << "Loading program...";
     cout << endl << endl;
@@ -22,20 +89,30 @@ void Menu::MainMenu() {
          << endl
          << "What would you like to do next? ";
 
-    while(true) {
+    int flag = 1;
+    while(flag) {
         cout << "Choose an option: ";
         cin >> option;
 
         switch (option) {
             case ('1'):
+
                 ToyMenu();
-                return MainMenu();
+
+                flag = 0;
+                break;
             case ('2'):
+
                 ExtraMenu();
-                return MainMenu();
+
+                flag = 0;
+                break;
             case ('3'):
+
                 RealMenu();
-                return MainMenu();
+
+                flag = 0;
+                break;
             case ('e'):
                 return exitProgram();
 
@@ -63,7 +140,6 @@ void Menu::ToyMenu() {
          << "What would you like to do next? ";
 
     int flag = 1;
-    string inputOrigin;
 
     while (flag) {
         cout << "Choose an option: ";
@@ -72,21 +148,21 @@ void Menu::ToyMenu() {
         switch (inputTypeO) {
             case ('1'):
 
-                //chamar reads
+                data_.readEdges("../Toy-Graphs/shipping.csv");
 
                 flag = 0;
                 break;
 
             case ('2'):
 
-                //chamar reads
+                data_.readEdges("../Toy-Graphs/stadiums.csv");
 
                 flag = 0;
                 break;
 
             case ('3'):
 
-                //chamar reads
+                data_.readTourism("../Toy-Graphs/tourism.csv");
 
                 flag = 0;
                 break;
@@ -106,7 +182,7 @@ void Menu::RealMenu() {
     char inputTypeO;
     cout << endl << endl;
     cout << "┌────────────────────────────────────┐" << endl
-         << "│              Toy Menu              │" << endl
+         << "│              Real Menu             │" << endl
          << "├────────────────────────────────────┤" << endl
          << "│  1 - graph 1                       │" << endl
          << "│  2 - graph 2                       │" << endl
@@ -119,7 +195,6 @@ void Menu::RealMenu() {
          << "What would you like to do next? ";
 
     int flag = 1;
-    string inputOrigin;
 
     while (flag) {
         cout << "Choose an option: ";
@@ -128,21 +203,24 @@ void Menu::RealMenu() {
         switch (inputTypeO) {
             case ('1'):
 
-                //chamar reads
+                data_.readNodes("../Real-world Graphs/graph1/nodes.csv");
+                data_.readEdges("../Real-world Graphs/graph1/edges.csv");
 
                 flag = 0;
                 break;
 
             case ('2'):
 
-                //chamar reads
+                data_.readNodes("../Real-world Graphs/graph2/nodes.csv");
+                data_.readEdges("../Real-world Graphs/graph2/edges.csv");
 
                 flag = 0;
                 break;
 
             case ('3'):
 
-                //chamar reads
+                data_.readNodes("../Real-world Graphs/graph3/nodes.csv");
+                data_.readEdges("../Real-world Graphs/graph3/edges.csv");
 
                 flag = 0;
                 break;
@@ -158,15 +236,14 @@ void Menu::RealMenu() {
     }
 }
 
-void Menu::ExtraMenu() {          //ver como vai ficar
+void Menu::ExtraMenu() {
     char inputTypeO;
     cout << endl << endl;
     cout << "┌────────────────────────────────────┐" << endl
-         << "│              Toy Menu              │" << endl
+         << "│             Extra Menu             │" << endl
          << "├────────────────────────────────────┤" << endl
-         << "│  1 - shipping                      │" << endl
-         << "│  2 - stadiums                      │" << endl
-         << "│  3 - tourism                       │" << endl
+         << "│  1 - edges                         │" << endl
+         << "│  2 - nodes                         │" << endl
          << "│                                    │" << endl
          << "│  b - back                          │" << endl
          << "│  e - Exit                          │" << endl
@@ -175,7 +252,6 @@ void Menu::ExtraMenu() {          //ver como vai ficar
          << "What would you like to do next? ";
 
     int flag = 1;
-    string inputOrigin;
 
     while (flag) {
         cout << "Choose an option: ";
@@ -184,21 +260,14 @@ void Menu::ExtraMenu() {          //ver como vai ficar
         switch (inputTypeO) {
             case ('1'):
 
-                //chamar reads
+                ChooseEdges();
 
                 flag = 0;
                 break;
 
             case ('2'):
 
-                //chamar reads
-
-                flag = 0;
-                break;
-
-            case ('3'):
-
-                //chamar reads
+                data_.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
 
                 flag = 0;
                 break;
@@ -214,293 +283,38 @@ void Menu::ExtraMenu() {          //ver como vai ficar
     }
 }
 
-/*
-void Menu::networkFailures() {
-    char option;
-    cout << endl << endl;
-    cout << "┌────────────────────────────────────┐" << endl
-         << "│        Failures on Network         │" << endl
-         << "├────────────────────────────────────┤" << endl
-         << "│  1 - Reservoirs Out of Comission   │" << endl
-         << "│  2 - Pumping Stations Removed      │" << endl
-         << "│  3 - Pipeline Rupture              │" << endl
-         << "│  b - Go Back                       │" << endl
-         << "│  e - Exit                          │" << endl
-         << "└────────────────────────────────────┘" << endl
-         << endl
-         << "What would you like to do next? ";
 
+bool isValidInput(int inputTypeO) {
+    static const std::set<int> validValues = {25, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900};
+    return validValues.find(inputTypeO) != validValues.end();
+}
 
-    while(true) {
-        cout << "Choose an option: ";
-        cin >> option;
+void Menu::ChooseEdges() {
+    int inputTypeO;
+    int flag = 1;
 
-        switch(option) {
-            case ('1'):
-                removedReservoir();
-                back();
-                return networkFailures();
-            case ('2'):
-                removedStation();
-                back();
-                return networkFailures();
-            case ('3'):
-                removedPipe();
-                back();
-                return networkFailures();
-            case ('b'):
-                return;
-            case ('e'):
-                return exitProgram();
+    while (flag) {
+        cout << "\n\n";
+        cout << "Type the number of nodes that you want to read? ";
+        cin >> inputTypeO;
 
-            default:
-                cout << endl << "Not a valid option!" << endl;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Valor inválido." << endl;
+            continue;
+        }
+
+        if (isValidInput(inputTypeO)) {
+            string numberStr = to_string(inputTypeO);
+            string path = "../Extra_Fully_Connected_Graphs/edges_" + numberStr + ".csv";
+            data_.readEdges(path);
+            flag = 0;
+        } else {
+           cout << "Valor inválido." << endl;
         }
     }
 }
-
-void Menu::removedReservoir() {
-    char option;
-    vector<string> a;
-
-    cout << endl << endl;
-    cout << "┌────────────────────────────────────┐" << endl
-         << "│     Reservoirs Out of Comission    │" << endl
-         << "├────────────────────────────────────┤" << endl
-         << "│  1 - See Affected Cities           │" << endl
-         << "│  b - Go Back                       │" << endl
-         << "│  e - Exit                          │" << endl
-         << "└────────────────────────────────────┘" << endl
-         << endl
-         << "What would you like to do next? ";
-
-
-    while(true) {
-        cout << "Choose an option: ";
-        cin >> option;
-
-        switch(option) {
-            case ('1'):
-                a = createVecR();
-
-                if(a.empty()){
-                    cout << "No values selected." << endl;
-                    return;
-                }
-
-                data_.reservoirOutOfCommission(a);
-
-                back();
-                return removedReservoir();
-
-            case ('b'):
-                return;
-            case ('e'):
-                return exitProgram();
-
-            default:
-                cout << endl << "Not a valid option!" << endl;
-        }
-    }
-}
-
-
-
-
-void Menu::removedStation() {
-    char option;
-    vector<string> sC;
-
-    cout << endl << endl;
-    cout << "┌────────────────────────────────────┐" << endl
-         << "│      Pumping Stations Removed      │" << endl
-         << "├────────────────────────────────────┤" << endl
-         << "│  1 - See Affected Cities           │" << endl
-         << "│  b - Go Back                       │" << endl
-         << "│  e - Exit                          │" << endl
-         << "└────────────────────────────────────┘" << endl
-         << endl
-         << "What would you like to do next? ";
-
-
-    while(true) {
-        cout << "Choose an option: ";
-        cin >> option;
-
-        switch(option) {
-            case ('1'):
-
-                sC = createVecS();
-
-                if(sC.empty()){
-                    cout << "No values selected." << endl;
-                    return;
-                }
-
-
-                data_.stationRemoved(sC);
-
-                back();
-                return removedStation();
-
-            case ('b'):
-                return;
-            case ('e'):
-                return exitProgram();
-
-            default:
-                cout << endl << "Not a valid option!" << endl;
-        }
-    }
-}
-
-
-
-
-void Menu::removedPipe() {
-    char option;
-
-    vector<pair<string, string>> pC;
-
-    cout << endl << endl;
-    cout << "┌────────────────────────────────────┐" << endl
-         << "│          Pipeline Rupture          │" << endl
-         << "├────────────────────────────────────┤" << endl
-         << "│  1 - See Affected Cities           │" << endl
-         << "│  b - Go Back                       │" << endl
-         << "│  e - Exit                          │" << endl
-         << "└────────────────────────────────────┘" << endl
-         << endl
-         << "What would you like to do next? ";
-
-
-    while(true) {
-        cout << "Choose an option: ";
-        cin >> option;
-
-        switch(option) {
-            case ('1'):
-
-                pC = createVecPipe();
-
-                if(pC.empty()){
-                    cout << "No valid values selected." << endl;
-                    return;
-                }
-
-                data_.pipelineRemoved(pC);
-
-                back();
-                return removedPipe();
-
-            case ('b'):
-                return;
-            case ('e'):
-                return exitProgram();
-
-            default:
-                cout << endl << "Not a valid option!" << endl;
-        }
-    }
-}
-
-
-
-
-vector<string> Menu::createVecR() {
-    bool flag = true;
-    vector<string> v = {};
-
-    cout << "Type Reservoir Codes/Names to remove and hit Enter and 'd' when done.\n\n";
-
-    while(flag){
-        string inp;
-        string x;
-
-        getline(cin, inp);
-
-        x = data_.verifyReservoirCode(inp);
-
-        if (x == "d") flag = false;
-        else {
-            auto it = data_.getReservoirs().find(x);
-
-            if (it != data_.getReservoirs().end()) {
-                v.push_back(x);
-            } else {
-                if(inp != ""){
-                    cout << "Not a valid Reservoir." << endl;
-                }
-            }
-        }
-    }
-
-    if(!v.empty()) cout << "List done." << endl << endl;
-
-    return v;
-}
-
-
-
-vector<string> Menu::createVecS() {
-    bool flag = true;
-    vector<string> v = {};
-
-    cout << "Type Station Codes to remove and hit Enter and 'd' when done.\n\n";
-
-    while(flag){
-        string inp = "";
-        cin >> inp;
-        if ( inp == "d") flag = false;
-        else{
-            auto it = data_.getStations().find(inp);
-
-            if (it != data_.getStations().end())
-                v.push_back(inp);
-
-            else cout << "Not a valid Station."<< endl;
-        }
-    }
-
-    if(!v.empty()) cout << "List done." << endl << endl;
-
-    return v;
-}
-
-
-
-vector<pair<string, string>> Menu::createVecPipe() {
-    bool flag = true;
-    vector<pair<string, string>> v = {};
-    cout << "Type Origin code and Destiny Code to remove and hit Enter and 'd' when done.\n\n";
-    cout << "Insert a pair (One Code per line): " << endl;
-
-    while(flag){
-        string pipe1 = "";
-        string pipe2 = "";
-
-        cin >> pipe1;
-
-        if ( pipe1 == "d") break;
-        cin >> pipe2;
-        if (pipe2 == "d") break;
-
-        if((pipe1 != "d") && (pipe2 != "d")){
-
-            if((data_.getGraph().findVertex(pipe1) != nullptr) && (data_.getGraph().findVertex(pipe2) != nullptr)){
-                v.push_back({pipe1, pipe2});
-                cout << "Insert another pair (One Code per line) or type 'd' if done:" << endl;
-            }
-
-            else cout << "Invalid values."<< endl;
-        }
-    }
-
-    if(!v.empty()) cout << "List done." << endl << endl;
-
-    return v;
-}*/
-
 
 
 
@@ -528,3 +342,69 @@ void Menu::exitProgram() {
     cout << endl << "Exiting program..." << endl;
     exit(0);
 }
+
+
+
+void Menu::DisplayBacktracking(){
+
+    vector<int> path;
+    path.push_back(0);
+    int currCost = 0;
+    data_.getGraph().findVertex(0)->setVisited(true);
+    auto begin = std::chrono::high_resolution_clock::now();
+    data_.RecursiveBackTracking(path,currCost,0);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    std::vector<int> bestPath = data_.getBestPath();
+    int bestCost = data_.getBestCost();
+
+    std::cout << "Melhor caminho encontrado: ";
+    for (int vertex : bestPath) {
+        std::cout << vertex << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Melhor custo encontrado: " << bestCost << std::endl;
+
+    auto resultado = end-begin;
+    cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+}
+
+void Menu::DisplayTriangularApprox() {
+
+    auto begin = std::chrono::high_resolution_clock::now();
+    vector<int> path;
+    double minCost = data_.TriangularApprox(path);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+
+    cout << "You should take the following path: " << endl;
+
+    for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
+        cout << " " << path[i] << " ->";
+    }
+    cout << " " << path[0] << endl << endl;
+
+    cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+}
+/*
+void Menu::DisplayHeuristics() {
+
+    auto begin = std::chrono::high_resolution_clock::now();
+    vector<int> path;
+    double minCost = data_.Christofides(path);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+
+    cout << "You should take the following path: " << endl;
+
+    for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
+        cout << " " << path[i] << " ->";
+    }
+    cout << " " << path[0] << endl << endl;
+
+    cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+}*/
