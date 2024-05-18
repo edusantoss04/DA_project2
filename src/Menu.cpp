@@ -19,7 +19,6 @@ void Menu::MainMenu() {
          << "│  3 - Heuristics                    │" << endl
          << "│  4 -                               │" << endl
          << "│                                    │" << endl
-         << "│  b - back                          │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
          << endl
@@ -36,6 +35,7 @@ void Menu::MainMenu() {
 
                 ChooseMenu();
                 DisplayBacktracking();
+                data_.clearData();
                 back();
 
                 flag = 0;
@@ -46,6 +46,7 @@ void Menu::MainMenu() {
 
                 ChooseMenu();
                 DisplayTriangularApprox();
+                data_.clearData();
                 back();
 
                 flag = 0;
@@ -54,16 +55,64 @@ void Menu::MainMenu() {
 
             case ('3'):
 
-                ChooseMenu();
-                //DisplayHeuristics();
-                back();
+                HeuristicsMenu();
 
                 flag = 0;
                 MainMenu();
                 break;
 
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option!" << endl;
+        }
+    }
+}
+
+void Menu::HeuristicsMenu() {
+    char option;
+    cout << endl << endl;
+    cout << "┌────────────────────────────────────┐" << endl
+         << "│        Heuristics Algorithm        │" << endl
+         << "├────────────────────────────────────┤" << endl
+         << "│  1 - Christofides                  │" << endl
+         << "│  2 - Nearest neighbor approx       │" << endl
+         << "│                                    │" << endl
+         << "│  b - back                          │" << endl
+         << "│  e - Exit                          │" << endl
+         << "└────────────────────────────────────┘" << endl
+         << endl
+         << "What would you like to do next? ";
+
+    int flag = 1;
+    while(flag) {
+        cout << "Choose an option: ";
+        cin >> option;
+
+        switch (option) {
+            case ('1'):
+
+                ChooseMenu();
+                DisplayChristofides();
+                data_.clearData();
+                back();
+
+                flag = 0;
+                break;
+            case ('2'):
+
+                ChooseMenu();
+                DisplayNearestNeighborApprox();
+                data_.clearData();
+                back();
+
+                flag = 0;
+                break;
+
             case ('b'):
                 return;
+
             case ('e'):
                 return exitProgram();
 
@@ -75,7 +124,6 @@ void Menu::MainMenu() {
 
 void Menu::ChooseMenu() {
     char option;
-    cout << "Loading program...";
     cout << endl << endl;
     cout << "┌────────────────────────────────────┐" << endl
          << "│        Choose the data set         │" << endl
@@ -84,6 +132,7 @@ void Menu::ChooseMenu() {
          << "│  2 - Extra_Fully_Connected_Graphs  │" << endl
          << "│  3 - Real-world Graphs             │" << endl
          << "│                                    │" << endl
+         << "│  b - back                          │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
          << endl
@@ -113,6 +162,10 @@ void Menu::ChooseMenu() {
 
                 flag = 0;
                 break;
+
+            case ('b'):
+                return;
+
             case ('e'):
                 return exitProgram();
 
@@ -121,7 +174,6 @@ void Menu::ChooseMenu() {
         }
     }
 }
-
 
 void Menu::ToyMenu() {
     char inputTypeO;
@@ -204,7 +256,7 @@ void Menu::RealMenu() {
             case ('1'):
 
                 data_.readNodes("../Real-world Graphs/graph1/nodes.csv");
-                data_.readEdges("../Real-world Graphs/graph1/edges.csv");
+                data_.readEdgesLarge("../Real-world Graphs/graph1/edges.csv");
 
                 flag = 0;
                 break;
@@ -212,7 +264,7 @@ void Menu::RealMenu() {
             case ('2'):
 
                 data_.readNodes("../Real-world Graphs/graph2/nodes.csv");
-                data_.readEdges("../Real-world Graphs/graph2/edges.csv");
+                data_.readEdgesLarge("../Real-world Graphs/graph2/edges.csv");
 
                 flag = 0;
                 break;
@@ -220,7 +272,7 @@ void Menu::RealMenu() {
             case ('3'):
 
                 data_.readNodes("../Real-world Graphs/graph3/nodes.csv");
-                data_.readEdges("../Real-world Graphs/graph3/edges.csv");
+                data_.readEdgesLarge("../Real-world Graphs/graph3/edges.csv");
 
                 flag = 0;
                 break;
@@ -302,7 +354,7 @@ void Menu::ChooseEdges() {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Valor inválido." << endl;
-            continue;
+            break;
         }
 
         if (isValidInput(inputTypeO)) {
@@ -365,7 +417,6 @@ void Menu::DisplayBacktracking(){
     std::cout << std::endl;
     std::cout << "Melhor custo encontrado: " << bestCost << std::endl;
 
-    auto resultado = end-begin;
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
 
@@ -388,12 +439,12 @@ void Menu::DisplayTriangularApprox() {
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
-/*
-void Menu::DisplayHeuristics() {
 
-    auto begin = std::chrono::high_resolution_clock::now();
+void Menu::DisplayNearestNeighborApprox() {
+
+    auto begin   = std::chrono::high_resolution_clock::now();
     vector<int> path;
-    double minCost = data_.Christofides(path);
+    double minCost = data_.NearestNeighborApprox(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
@@ -402,9 +453,30 @@ void Menu::DisplayHeuristics() {
     cout << "You should take the following path: " << endl;
 
     for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
-        cout << " " << path[i] << " ->";
+        cout << " " << path[i]<< " ->";
     }
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-}*/
+}
+
+void Menu::DisplayChristofides() {
+
+    auto begin   = std::chrono::high_resolution_clock::now();
+    vector<int> path;
+    double minCost = data_.christofides(path);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+
+    cout << "You should take the following path: " << endl;
+
+    for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
+        cout << " " << path[i]<< " ->";
+    }
+    cout << " " << path[0] << endl << endl;
+
+    cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+}
+

@@ -21,21 +21,13 @@ public:
 
     void DisplayBacktracking();
     void DisplayTriangularApprox();
-    //void DisplayHeuristics();
+    void HeuristicsMenu();
+
+    void DisplayNearestNeighborApprox();
+    void DisplayChristofides();
+
 
     void ChooseEdges();
-
-    /*void maxWater();
-    void deficitPerCity();
-    void balanceFlow();
-    void networkFailures();
-    void removedReservoir();
-    void removedStation();
-    void removedPipe();
-
-    vector<string> createVecR();
-    vector<string> createVecS();
-    vector<pair<string, string>> createVecPipe();*/
 
     void back() const;
     static void exitProgram() ;

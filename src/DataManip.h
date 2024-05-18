@@ -16,6 +16,7 @@ class DataManip {
 
 public:
     DataManip();
+    void clearData();
 
     std::vector<int> getBestPath() const;
 

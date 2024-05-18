@@ -12,8 +12,8 @@ int main(){
 
     //auto begin = std::chrono::high_resolution_clock::now();
 
-    //Menu menu = Menu(data);
-    //menu.MainMenu();
+    Menu menu = Menu(data);
+    menu.MainMenu();
     //....................................Escolher ficheiro para ler .................................
 
     //...........TOY GRAPHS.........
@@ -32,8 +32,8 @@ int main(){
     //data.readNodes("../Real-world Graphs/graph1/nodes.csv");
     //data.readEdgesLarge("../Real-world Graphs/graph1/edges.csv");
 
-    data.readNodes("../Real-world Graphs/graph2/nodes.csv");
-    data.readEdgesLarge("../Real-world Graphs/graph2/edges.csv");
+    //data.readNodes("../Real-world Graphs/graph2/nodes.csv");
+    //data.readEdgesLarge("../Real-world Graphs/graph2/edges.csv");
 
     //data.readNodes("../Real-world Graphs/graph3/nodes.csv");
     //data.readEdgesLarge("../Real-world Graphs/graph3/edges.csv");
@@ -110,7 +110,7 @@ int main(){
 
 
     //............3.TESTAR HEURISTICAS...............
-
+/*
     auto begin   = std::chrono::high_resolution_clock::now();
     vector<int> path;
     double minCost = data.NearestNeighborApprox(path);
@@ -128,6 +128,6 @@ int main(){
     cout << path.size()<<endl;
     cout << data.getGraph().getNumVertex();
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-
+*/
     return 0;
 }

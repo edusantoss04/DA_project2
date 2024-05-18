@@ -12,6 +12,12 @@
 using namespace std;
 DataManip::DataManip() {}
 
+void DataManip::clearData() {
+    bestPath.clear();
+    bestCost = numeric_limits<int>::max();
+    graph_ = Graph();
+}
+
 std::vector<int> DataManip::getBestPath() const {
     return bestPath;
 }
