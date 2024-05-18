@@ -24,7 +24,7 @@ public:
     void HeuristicsMenu();
 
     void DisplayNearestNeighborApprox();
-    void DisplayChristofides();
+    void DisplaySimulatedAnnealing();
 
 
     void ChooseEdges();

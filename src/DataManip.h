@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <limits>
+#include <unordered_set>
 
 class DataManip {
 
@@ -42,10 +43,15 @@ public:
 
     //Other heuristics
     double NearestNeighborApprox(vector< int> &path);
-    //double simulatedAnnealing(vector<int>& path, double initialTemperature = 5000.0,
-                             // double coolingRate = 0.95);
+    double simulatedAnnealing(vector<int>& path, double initialTemperature = 5000.0, double coolingRate = 0.95);
 
-    double christofides(std::vector<int> &path);
+
+    void resetGraph(std::unordered_set<int> &unvisitedNodes);
+    int findNearestNeighbor(int currentNode, double &minDistance);
+    int findNearestNeighborNotConnected(int currentNode, double &minDistance);
+    double NearestNeighborApproxNotConnected(std::vector<int> &route,int startNode);
+
+
     Graph getGraph();
 };
 

@@ -19,12 +19,12 @@ int main(){
     //...........TOY GRAPHS.........
     //data.readTourism("../Toy-Graphs/tourism.csv");
     //data.readToy("../Toy-Graphs/stadiums.csv");
-    //data.readToy("../Toy-Graphs/shipping.csv");
+   // data.readToy("../Toy-Graphs/shipping.csv");
 
     //..............Extra_Fully............
     //data.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
     //data.readEdges("../Extra_Fully_Connected_Graphs/edges_25.csv");
-    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_100.csv");
+    //data.readEdges("../Extra_Fully_Connected_Graphs/edges_900.csv");
 
 
 
@@ -89,7 +89,7 @@ int main(){
 
 */
     //.....................................2.TESTAR TriangularApprox .............................
-    /*
+/*
     auto begin = std::chrono::high_resolution_clock::now();
     vector<int> path;
     double minCost = data.TriangularApprox(path);
@@ -106,28 +106,32 @@ int main(){
     cout << " " << path[0] << endl << endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-    */
 
+*/
 
     //............3.TESTAR HEURISTICAS...............
 /*
     auto begin   = std::chrono::high_resolution_clock::now();
     vector<int> path;
     double minCost = data.NearestNeighborApprox(path);
+    minCost = data.simulatedAnnealing(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
-    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
 
-    cout << "You should take the following path: " << endl;
 
-    for (int i = 0; i < data.getGraph().getVertexSet().size(); i++) {
-        cout << " " << path[i]<< " ->";
+    if(minCost!=0) {
+        cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+        cout << "You should take the following path: " << endl;
+
+        for (int i = 0; i < data.getGraph().getVertexSet().size(); i++) {
+            cout << " " << path[i] << " ->";
+        }
+        cout << " " << path[0] << endl << endl;
     }
-    cout << " " << path[0] << endl << endl;
-    cout << path.size()<<endl;
-    cout << data.getGraph().getNumVertex();
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 */
+
+
     return 0;
 }

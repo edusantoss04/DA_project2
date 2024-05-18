@@ -17,7 +17,6 @@ void Menu::MainMenu() {
          << "│  1 - Backtracking                  │" << endl
          << "│  2 - TriangularApprox              │" << endl
          << "│  3 - Heuristics                    │" << endl
-         << "│  4 -                               │" << endl
          << "│                                    │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
@@ -76,8 +75,8 @@ void Menu::HeuristicsMenu() {
     cout << "┌────────────────────────────────────┐" << endl
          << "│        Heuristics Algorithm        │" << endl
          << "├────────────────────────────────────┤" << endl
-         << "│  1 - Christofides                  │" << endl
-         << "│  2 - Nearest neighbor approx       │" << endl
+         << "│  1 - Simulated Annealing           │" << endl
+         << "│  2 - Nearest neighbor approximation│" << endl
          << "│                                    │" << endl
          << "│  b - back                          │" << endl
          << "│  e - Exit                          │" << endl
@@ -94,7 +93,7 @@ void Menu::HeuristicsMenu() {
             case ('1'):
 
                 ChooseMenu();
-                DisplayChristofides();
+                DisplaySimulatedAnnealing();
                 data_.clearData();
                 back();
 
@@ -460,23 +459,26 @@ void Menu::DisplayNearestNeighborApprox() {
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
 
-void Menu::DisplayChristofides() {
+void Menu::DisplaySimulatedAnnealing() {
 
     auto begin   = std::chrono::high_resolution_clock::now();
     vector<int> path;
-    double minCost = data_.christofides(path);
+    double minCost = data_.NearestNeighborApprox(path);
+    minCost = data_.simulatedAnnealing(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
-    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
 
-    cout << "You should take the following path: " << endl;
 
-    for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
-        cout << " " << path[i]<< " ->";
+    if(minCost!=0) {
+        cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+        cout << "You should take the following path: " << endl;
+
+        for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
+            cout << " " << path[i] << " ->";
+        }
+        cout << " " << path[0] << endl << endl;
     }
-    cout << " " << path[0] << endl << endl;
-
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
 

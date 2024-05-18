@@ -323,146 +323,202 @@ double DataManip::CalculateTourCost(vector<int> &path) {
 }
 
 
-double DataManip::NearestNeighborApprox(vector<int> &path) {
-    unordered_set<int> not_visited;
-    double cost = 0;
 
-    // reset graph
-    for (auto v: graph_.getVertexSet()) {
+void DataManip::resetGraph(std::unordered_set<int> &unvisitedNodes) {
+    for (const auto &v : graph_.getVertexSet()) {
         v.second->setVisited(false);
-        not_visited.insert(v.second->getId());
+        unvisitedNodes.insert(v.second->getId());
     }
-
-   int current_stop = 0;
-    path.push_back(current_stop);
-    graph_.findVertex(current_stop)->setVisited(true);
-    not_visited.erase(current_stop);
-
-    while (!not_visited.empty()) {
-        bool found = false;
-        int next_stop = -1;
-        double min_distance = std::numeric_limits<double>::max();
-        Vertex *currentVertex = graph_.findVertex(current_stop);
-
-        for (auto pair: currentVertex->getAdj()) {
-            Edge* edge = pair.second;
-            Vertex *vertex = edge->getDest();
-            double distance = edge->getDistance();
-
-
-            if (distance == 0) {
-                distance = calculateDistance(currentVertex->getLatitude(), currentVertex->getLongitude(), vertex->getLatitude(), vertex->getLongitude());
-            }
-
-            if (!vertex->isVisited() && distance < min_distance) {
-                next_stop = vertex->getId();
-                min_distance = distance;
-                found = true;
-            }
-        }
-
-        if (found) {
-            cost += min_distance;
-            graph_.findVertex(next_stop)->setVisited(true);
-            path.push_back(next_stop);
-            not_visited.erase(next_stop);
-            current_stop = next_stop;
-        } else {
-            break;
-        }
-    }
-    // Return to the start vertex (0)
-    path.push_back(0);
-    for (auto pair: graph_.findVertex(current_stop)->getAdj()) {
-        Edge *edge = pair.second;
-        if (edge->getDest()->getId() == 0) {
-            cost += edge->getDistance();
-            break;
-        }
-    }
-
-    return cost;
 }
 
-double DataManip::christofides(std::vector<int> &path) {
-    // Obter a MST usando o algoritmo de Prim
-    set<Edge*> mst = graph_.MSTprims();
+int DataManip::findNearestNeighbor(int currentNode, double &minDistance) {
+    int nearestNeighbor = -1;
+    minDistance = std::numeric_limits<double>::max();
+    Vertex *currentVertex = graph_.findVertex(currentNode);
 
-    // Encontrar vértices de grau ímpar
-    std::vector<Vertex*> odds = graph_.findOddDegree();
+    // First, find the nearest unvisited neighbor directly connected to the current node
+    for (const auto &pair : currentVertex->getAdj()) {
+        Edge* edge = pair.second;
+        Vertex *vertex = edge->getDest();
+        double distance = edge->getDistance();
 
-    // Obter o emparelhamento perfeito dos vértices de grau ímpar
-    std::set<Edge*> matching = graph_.perfectMatching(odds);
-
-    // Combinar MST e o matching para criar um multigrafo
-    set<Edge*> combine_graph;
-    for (auto e: mst){
-        if (combine_graph.find(e)==combine_graph.end()){ // se ainda nao estiver lá
-            combine_graph.insert(e);
-            combine_graph.insert(e->getDest()->addEdge(e->getOrig(),e->getDistance()));
-            //combine_graph.insert(new Edge(e->getDest(), e->getOrig(),e->getWeight()));
-        }
-    }
-    bool reverse=false;
-    for (Edge* edge : matching) {
-        if (combine_graph.find(edge) == combine_graph.end()) {
-            combine_graph.insert(edge);
-            combine_graph.insert(edge->getDest()->addEdge(edge->getOrig(), edge->getDistance()));
+        if (!vertex->isVisited() && distance < minDistance) {
+            nearestNeighbor = vertex->getId();
+            minDistance = distance;
         }
     }
 
-    // Encontrar o caminho de Euler no multigrafo
-    std::vector<Vertex*> euler_path;
-    Vertex* start = graph_.getVertexSet().begin()->second; // Assumindo que o grafo não está vazio e escolhendo um vértice inicial
-    std::stack<Vertex*> s;
-    s.push(start);
-
-    while (!combine_graph.empty()) {
-        Vertex* current = s.top();
-        Edge* next_edge = nullptr;
-
-        // Encontrar a próxima aresta no multigrafo combinada
-        for (auto pair : current->getAdj()) {
-            auto e = pair.second;
-            if (combine_graph.find(e) != combine_graph.end()) {
-                next_edge = e;
-                break;
-            }
-        }
-
-        if (next_edge != nullptr) {
-            s.push(next_edge->getDest());
-            combine_graph.erase(next_edge);
-            for (auto it = combine_graph.begin(); it != combine_graph.end(); ++it) {
-                if ((*it)->getDest() == next_edge->getOrig() && (*it)->getOrig() == next_edge->getDest()) {
-                    combine_graph.erase(it);
-                    break;
+    // If no directly connected neighbor is found, find the nearest unvisited node in the graph
+    if (nearestNeighbor == -1) {
+        for (const auto &v : graph_.getVertexSet()) {
+            Vertex *vertex = v.second;
+            if (!vertex->isVisited()) {
+                double distance = graph_.getDistance(currentVertex, vertex);
+                if (distance < minDistance) {
+                    nearestNeighbor = vertex->getId();
+                    minDistance = distance;
                 }
             }
-        } else {
-            euler_path.push_back(current);
-            s.pop();
         }
     }
-    euler_path.push_back(start); // Completar o ciclo de Euler
 
-    // Converter o caminho de Euler em um ciclo Hamiltoniano
-    std::set<Vertex*> visited;
-    for (Vertex* vertex : euler_path) {
-        if (visited.find(vertex) == visited.end()) {
-            path.push_back(vertex->getId());
-            visited.insert(vertex);
-        }
-    }
-    path.push_back(start->getId()); // Fechar o ciclo Hamiltoniano
-
-    // Calcular o custo do ciclo Hamiltoniano
-    double min_cost = CalculateTourCost( path);
-
-    return min_cost;
+    return nearestNeighbor;
 }
 
+int DataManip::findNearestNeighborNotConnected(int currentNode, double &minDistance) {
+    int nearestNeighbor = -1;
+    minDistance = std::numeric_limits<double>::max();
+    Vertex *currentVertex = graph_.findVertex(currentNode);
 
+    // First, find the nearest unvisited neighbor directly connected to the current node
+    for (const auto &pair : currentVertex->getAdj()) {
+        Edge* edge = pair.second;
+        Vertex *vertex = edge->getDest();
+        double distance = edge->getDistance();
+
+        if (!vertex->isVisited() && distance < minDistance) {
+            nearestNeighbor = vertex->getId();
+            minDistance = distance;
+        }
+    }
+
+    // If no directly connected neighbor is found, find the nearest unvisited node in the graph
+    if (nearestNeighbor == -1) {
+       return -1;
+    }
+
+    return nearestNeighbor;
+}
+
+double DataManip::NearestNeighborApprox(std::vector<int> &route) {
+    std::unordered_set<int> unvisitedNodes;
+    double totalCost = 0.0;
+
+    resetGraph(unvisitedNodes);
+
+    int currentNode = 0;
+    route.push_back(currentNode);
+    graph_.findVertex(currentNode)->setVisited(true);
+    unvisitedNodes.erase(currentNode);
+
+    while (!unvisitedNodes.empty()) {
+        double minDistance;
+        int nextNode = findNearestNeighbor(currentNode, minDistance);
+
+        if (nextNode == -1) {
+            break;
+        }
+
+        totalCost += minDistance;
+        graph_.findVertex(nextNode)->setVisited(true);
+        route.push_back(nextNode);
+        unvisitedNodes.erase(nextNode);
+        currentNode = nextNode;
+    }
+
+    // Return to the start node
+    route.push_back(0);
+    for (const auto &pair : graph_.findVertex(currentNode)->getAdj()) {
+        Edge *edge = pair.second;
+        if (edge->getDest()->getId() == 0) {
+            totalCost += edge->getDistance();
+            break;
+        }
+    }
+
+    return totalCost;
+}
+
+double DataManip::NearestNeighborApproxNotConnected(std::vector<int> &route,int startNode) {
+    std::unordered_set<int> unvisitedNodes;
+    double totalCost = 0.0;
+
+    resetGraph(unvisitedNodes);
+
+    int currentNode = startNode;
+    route.push_back(currentNode);
+    graph_.findVertex(currentNode)->setVisited(true);
+    unvisitedNodes.erase(currentNode);
+
+    while (!unvisitedNodes.empty()) {
+        double minDistance;
+        int nextNode = findNearestNeighborNotConnected(currentNode, minDistance);
+
+        if (nextNode == -1) {
+            cout << "No possible path starting at node "<< startNode << endl ;
+            return 0;
+        }
+
+        totalCost += minDistance;
+        graph_.findVertex(nextNode)->setVisited(true);
+        route.push_back(nextNode);
+        unvisitedNodes.erase(nextNode);
+        currentNode = nextNode;
+    }
+
+    // Return to the start node
+    route.push_back(startNode);
+    for (const auto &pair : graph_.findVertex(currentNode)->getAdj()) {
+        Edge *edge = pair.second;
+        if (edge->getDest()->getId() == startNode) {
+            totalCost += edge->getDistance();
+            break;
+        }
+    }
+
+    return totalCost;
+}
+
+double DataManip::simulatedAnnealing(std::vector<int>& path, double initialTemperature, double coolingRate) {
+    int numVertices = graph_.getVertexSet().size();
+    int maxIterations =  100;
+
+    std::vector<int> currentSolution = path;
+    bestPath = currentSolution;
+    double currentCost = CalculateTourCost(currentSolution);
+    bestCost = currentCost;
+
+    const double minTemperature = 1e-6;
+    double temperature = initialTemperature;
+
+    std::mt19937 randomGenerator(std::chrono::system_clock::now().time_since_epoch().count());
+    std::uniform_int_distribution<int> vertexDist(1, numVertices - 1);
+    std::uniform_real_distribution<double> probabilityDist(0.0, 1.0);
+
+    while (temperature > minTemperature) {
+        for (int iteration = 0; iteration < maxIterations / (1 + log(1 + temperature)); ++iteration) {
+            std::vector<int> neighborSolution = currentSolution;
+            int swapIndex1 = vertexDist(randomGenerator);
+            int swapIndex2 = vertexDist(randomGenerator);
+            while (swapIndex1 == swapIndex2) {
+                swapIndex2 = vertexDist(randomGenerator);
+            }
+
+            std::swap(neighborSolution[swapIndex1], neighborSolution[swapIndex2]);
+
+            double neighborCost = CalculateTourCost(neighborSolution);
+
+            double acceptanceProbability = exp((currentCost - neighborCost) / temperature);
+
+            if (neighborCost < currentCost || probabilityDist(randomGenerator) < acceptanceProbability) {
+                currentSolution = neighborSolution;
+                currentCost = neighborCost;
+            }
+
+            if (currentCost < bestCost) {
+                bestPath = currentSolution;
+                bestCost = currentCost;
+            }
+        }
+
+        temperature *= coolingRate;
+    }
+
+    std::cout << "Best cost: " << bestCost << std::endl;
+
+    path = bestPath;
+    return bestCost;
+}
 
 Graph DataManip::getGraph() {
     return graph_;
@@ -472,69 +528,3 @@ Graph DataManip::getGraph() {
 
 
 
-/*
-double DataManip::simulatedAnnealing(vector<int>& path, double initialTemperature,
-                                     double coolingRate){
-
-    int maxIterations = 5*graph_.getVertexSet().size() * graph_.getVertexSet().size();
-
-
-    // Inicializa o caminho atual e o melhor caminho
-    vector<int> currentPath = path;
-    bestPath= currentPath;
-
-    // Inicializa o custo atual e o melhor custo
-    double currentCost = CalculateTourCost(currentPath);
-    bestCost= currentCost;
-
-    // Inicializa a temperatura mínima
-    const double minTemperature = 1e-6;
-    double temperature = initialTemperature;
-
-    // Inicializa o gerador de números aleatórios com uma semente baseada no relógio do sistema
-    std::mt19937 gen(chrono::system_clock::now().time_since_epoch().count());
-    std::uniform_int_distribution<int> randDist(1, graph_.getVertexSet().size() - 1); // Modificado para incluir o índice 0
-    std::uniform_real_distribution<double> probDist(0.0, 1.0);
-    // Itera até que a temperatura atinja o mínimo
-    while(temperature > minTemperature){
-        for(int i = 0; i < maxIterations; i++){
-            // Gera um vizinho aleatório
-            vector<int> neighborPath = currentPath;
-            int index1 = randDist(gen);
-            int index2 = randDist(gen);
-            while(index1 == index2){
-                index2 = randDist(gen);
-            }
-
-            // Troca os elementos nos índices index1 e index2
-            swap(neighborPath[index1], neighborPath[index2]);
-
-            // Calcula o custo do novo caminho
-            double newCost = CalculateTourCost(neighborPath);
-
-            // Calcula a probabilidade de aceitação
-            double acceptanceProbability = exp((currentCost - newCost) / temperature);
-
-            // Aceita o vizinho se for melhor ou com uma certa probabilidade se for pior
-            if(newCost < currentCost || probDist(gen) < acceptanceProbability){
-                currentPath = neighborPath;
-                currentCost = newCost;
-            }
-
-            // Atualiza o melhor caminho
-            if(currentCost < bestCost){
-                bestPath = currentPath;
-                bestCost = currentCost;
-            }
-        }
-
-        // Resfria a temperatura
-        temperature *= coolingRate;
-    }
-    cout << "Melhor custo: " << bestCost << endl;
-
-    // Atualiza o caminho de entrada com o melhor caminho encontrado
-    path = bestPath;
-    return bestCost;
-}
-*/
