@@ -206,7 +206,7 @@ bool DataManip::Solution(const vector<int>& path) {
     }
 
     int finalVertex = path.back();
-    int startVertex = 0;
+    int startVertex = path[0];
     for (auto pair : graph_.findVertex(finalVertex)->getAdj()) {
         Edge* edge = pair.second;
         if (edge->getDest()->getId() == startVertex) {

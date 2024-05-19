@@ -12,14 +12,14 @@ int main(){
 
     //auto begin = std::chrono::high_resolution_clock::now();
 
-    Menu menu = Menu(data);
-    menu.MainMenu();
+    //Menu menu = Menu(data);
+    //menu.MainMenu();
     //....................................Escolher ficheiro para ler .................................
 
     //...........TOY GRAPHS.........
     //data.readTourism("../Toy-Graphs/tourism.csv");
-    //data.readToy("../Toy-Graphs/stadiums.csv");
-   // data.readToy("../Toy-Graphs/shipping.csv");
+    data.readToy("../Toy-Graphs/stadiums.csv");
+    //data.readToy("../Toy-Graphs/shipping.csv");
 
     //..............Extra_Fully............
     //data.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
@@ -61,7 +61,7 @@ int main(){
 
 
     //.....................................1.TESTAR BACKTRACKING ...........................
-/*
+
     vector<int> path;
     path.push_back(0);
     int currCost = 0;
@@ -87,7 +87,7 @@ int main(){
     //cout << data.getGraph().getVertexSet().size();
 
 
-*/
+
     //.....................................2.TESTAR TriangularApprox .............................
 /*
     auto begin = std::chrono::high_resolution_clock::now();
@@ -110,11 +110,12 @@ int main(){
 */
 
     //............3.TESTAR HEURISTICAS...............
-/*
-    auto begin   = std::chrono::high_resolution_clock::now();
+
+    /*
     vector<int> path;
-    double minCost = data.NearestNeighborApprox(path);
-    minCost = data.simulatedAnnealing(path);
+    auto begin = std::chrono::high_resolution_clock::now();
+    double minCost = data.NearestNeighborApproxNotConnected(path,8);
+    //minCost = data.simulatedAnnealing(path);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
@@ -130,7 +131,7 @@ int main(){
         cout << " " << path[0] << endl << endl;
     }
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
-*/
+    */
 
 
     return 0;
