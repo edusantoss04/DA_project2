@@ -1,0 +1,377 @@
+\hypertarget{classDataManip}{}\doxysection{Data\+Manip Class Reference}
+\label{classDataManip}\index{DataManip@{DataManip}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDataManip_a429abd4d3690c231858d63f6e126a8f9}{Data\+Manip}} ()
+\begin{DoxyCompactList}\small\item\em Constructor for \mbox{\hyperlink{classDataManip}{Data\+Manip}} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManip_a166acbbbc712671472ee00bfc65e9990}{clear\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Clears the current data, resetting the best path, best cost, and graph. \end{DoxyCompactList}\item 
+std\+::vector$<$ int $>$ \mbox{\hyperlink{classDataManip_afe9e9d3d4947cadb19373f7a3a7b9904}{get\+Best\+Path}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the best path computed by the algorithm. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDataManip_a0cdbb321aca683e55d584a8e6c248b80}{get\+Best\+Cost}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the best cost computed by the algorithm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataManip_ad202b803cfdfc7e6c065d21126849d4e}\label{classDataManip_ad202b803cfdfc7e6c065d21126849d4e}} 
+void {\bfseries read\+Tourism} (string filename)
+\begin{DoxyCompactList}\small\item\em Reads tourism data from a file and populates the graph. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataManip_a10d2c9b11852cac444c152a40498e17c}\label{classDataManip_a10d2c9b11852cac444c152a40498e17c}} 
+void {\bfseries read\+Edges} (string filename)
+\begin{DoxyCompactList}\small\item\em Reads edges from a file and populates the graph. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataManip_aa8c146d1e32395d7f70867eed25491be}\label{classDataManip_aa8c146d1e32395d7f70867eed25491be}} 
+void {\bfseries read\+Nodes} (string filename)
+\begin{DoxyCompactList}\small\item\em Reads node information from a file and adds them to the graph. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataManip_a4020e500e803aaa69e2980db7e0787f4}\label{classDataManip_a4020e500e803aaa69e2980db7e0787f4}} 
+void {\bfseries read\+Toy} (string filename)
+\begin{DoxyCompactList}\small\item\em Reads toy dataset from a file and populates the graph. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataManip_a7bda8c70d52e29a860ea2b584f51489c}\label{classDataManip_a7bda8c70d52e29a860ea2b584f51489c}} 
+void {\bfseries read\+Edges\+Large} (string filename)
+\begin{DoxyCompactList}\small\item\em Reads large edges data from a file and populates the graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManip_a5508f5547264bae9aacb022a2bd1acec}{Recursive\+Back\+Tracking}} (vector$<$ int $>$ \&path, double curr\+Cost, int curr\+Pos)
+\begin{DoxyCompactList}\small\item\em Performs recursive backtracking to find the best path. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classDataManip_abbf73662bc5efa11ae0a2ab1b6438b77}\label{classDataManip_abbf73662bc5efa11ae0a2ab1b6438b77}} 
+bool {\bfseries Solution} (const std\+::vector$<$ int $>$ \&path)
+\item 
+bool \mbox{\hyperlink{classDataManip_a701636323a67a68cfe24c81d320593b7}{Bound}} (double curr\+Cost)
+\begin{DoxyCompactList}\small\item\em Checks if the current cost is less than the best cost. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDataManip_a8728c7e89095432ff85c145b7f374b00}{Triangular\+Approx}} (vector$<$ int $>$ \&path)
+\begin{DoxyCompactList}\small\item\em Performs the Triangular Approximation Algorithm to find an approximate solution for the TSP. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDataManip_a2ccb85905c61e945021a78c4cc2e2e22}{Calculate\+Tour\+Cost}} (vector$<$ int $>$ \&path)
+\begin{DoxyCompactList}\small\item\em Calculates the cost of a tour represented by a sequence of vertices. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDataManip_ade781c1a0408ab0e2c453587e7fd9d88}{Nearest\+Neighbor\+Approx}} (vector$<$ int $>$ \&path)
+\begin{DoxyCompactList}\small\item\em Performs the Nearest Neighbor Approximation Algorithm to find an approximate solution for the TSP. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDataManip_aa97e5da4f96a260a724a42b3e9d7c54e}{simulated\+Annealing}} (vector$<$ int $>$ \&path, double initial\+Temperature=5000.\+0, double cooling\+Rate=0.\+95)
+\begin{DoxyCompactList}\small\item\em Performs the Simulated Annealing algorithm to find an approximate solution for the TSP. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classDataManip_a54e76db2836027be8f41b644d8ba25fc}{reset\+Graph}} (std\+::unordered\+\_\+set$<$ int $>$ \&unvisited\+Nodes)
+\begin{DoxyCompactList}\small\item\em Resets the visited status of vertices in the graph and populates the set of unvisited nodes. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDataManip_a016565b62353d15acdb62bcd31aa0f80}{find\+Nearest\+Neighbor}} (int current\+Node, double \&min\+Distance)
+\begin{DoxyCompactList}\small\item\em Finds the nearest unvisited neighbor of a given vertex. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classDataManip_af8606ee877a646a882c164f8e1a08f72}{find\+Nearest\+Neighbor\+Not\+Connected}} (int current\+Node, double \&min\+Distance)
+\begin{DoxyCompactList}\small\item\em Finds the nearest unvisited neighbor directly connected to a given vertex. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classDataManip_a7360ebd23d5e5dcc27818856ae84bdc3}{Nearest\+Neighbor\+Approx\+Not\+Connected}} (std\+::vector$<$ int $>$ \&route, int start\+Node)
+\begin{DoxyCompactList}\small\item\em Performs the Nearest Neighbor Approximation Algorithm for a graph with disconnected components. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGraph}{Graph}} \mbox{\hyperlink{classDataManip_a07820ea9a44d26b482cae7d99d05116a}{get\+Graph}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the graph associated with the \mbox{\hyperlink{classDataManip}{Data\+Manip}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classDataManip_a429abd4d3690c231858d63f6e126a8f9}\label{classDataManip_a429abd4d3690c231858d63f6e126a8f9}} 
+\index{DataManip@{DataManip}!DataManip@{DataManip}}
+\index{DataManip@{DataManip}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{DataManip()}{DataManip()}}
+{\footnotesize\ttfamily Data\+Manip\+::\+Data\+Manip (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructor for \mbox{\hyperlink{classDataManip}{Data\+Manip}} class. 
+
+This constructor initializes a \mbox{\hyperlink{classDataManip}{Data\+Manip}} object. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classDataManip_a701636323a67a68cfe24c81d320593b7}\label{classDataManip_a701636323a67a68cfe24c81d320593b7}} 
+\index{DataManip@{DataManip}!Bound@{Bound}}
+\index{Bound@{Bound}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{Bound()}{Bound()}}
+{\footnotesize\ttfamily bool Data\+Manip\+::\+Bound (\begin{DoxyParamCaption}\item[{double}]{curr\+Cost }\end{DoxyParamCaption})}
+
+
+
+Checks if the current cost is less than the best cost. 
+
+This method checks if the current cost is less than the best cost obtained so far. If the current cost is less than the best cost, it indicates that the current path being explored is promising and can potentially lead to a better solution.
+
+
+\begin{DoxyParams}{Parameters}
+{\em curr\+Cost} & The current cost to be compared with the best cost.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool True if the current cost is less than the best cost, indicating a promising path. False otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classDataManip_a2ccb85905c61e945021a78c4cc2e2e22}\label{classDataManip_a2ccb85905c61e945021a78c4cc2e2e22}} 
+\index{DataManip@{DataManip}!CalculateTourCost@{CalculateTourCost}}
+\index{CalculateTourCost@{CalculateTourCost}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{CalculateTourCost()}{CalculateTourCost()}}
+{\footnotesize\ttfamily double Data\+Manip\+::\+Calculate\+Tour\+Cost (\begin{DoxyParamCaption}\item[{vector$<$ int $>$ \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Calculates the cost of a tour represented by a sequence of vertices. 
+
+This method calculates the total cost of a tour represented by a sequence of vertices. It computes the sum of distances between consecutive vertices in the tour. If the distance between two vertices is not directly available in the graph, it calculates the distance using the Haversine formula based on their latitude and longitude.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & A vector representing the sequence of vertices in the tour.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The total cost of the tour.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the size and structure of the graph, as it involves traversing the vertices in the given path and calculating distances between them. If the distance between two vertices is not directly available in the graph, calculating the distance using the Haversine formula contributes to the overall time complexity. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a166acbbbc712671472ee00bfc65e9990}\label{classDataManip_a166acbbbc712671472ee00bfc65e9990}} 
+\index{DataManip@{DataManip}!clearData@{clearData}}
+\index{clearData@{clearData}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{clearData()}{clearData()}}
+{\footnotesize\ttfamily void Data\+Manip\+::clear\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Clears the current data, resetting the best path, best cost, and graph. 
+
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a016565b62353d15acdb62bcd31aa0f80}\label{classDataManip_a016565b62353d15acdb62bcd31aa0f80}} 
+\index{DataManip@{DataManip}!findNearestNeighbor@{findNearestNeighbor}}
+\index{findNearestNeighbor@{findNearestNeighbor}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{findNearestNeighbor()}{findNearestNeighbor()}}
+{\footnotesize\ttfamily int Data\+Manip\+::find\+Nearest\+Neighbor (\begin{DoxyParamCaption}\item[{int}]{current\+Node,  }\item[{double \&}]{min\+Distance }\end{DoxyParamCaption})}
+
+
+
+Finds the nearest unvisited neighbor of a given vertex. 
+
+This method finds the nearest unvisited neighbor of a given vertex in the graph. It first checks for directly connected neighbors and then searches for the nearest unvisited node in the entire graph if no directly connected neighbor is found or if the minimum distance is greater than 9000.
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Node} & The ID of the current node for which the nearest neighbor is to be found. \\
+\hline
+{\em min\+Distance} & Reference to a double variable to store the minimum distance to the nearest neighbor.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The ID of the nearest unvisited neighbor vertex.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the size and structure of the graph. In the worst case, if no directly connected neighbor is found, it iterates over all vertices in the graph to find the nearest unvisited node, resulting in O(\+V) complexity, where V is the number of vertices in the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_af8606ee877a646a882c164f8e1a08f72}\label{classDataManip_af8606ee877a646a882c164f8e1a08f72}} 
+\index{DataManip@{DataManip}!findNearestNeighborNotConnected@{findNearestNeighborNotConnected}}
+\index{findNearestNeighborNotConnected@{findNearestNeighborNotConnected}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{findNearestNeighborNotConnected()}{findNearestNeighborNotConnected()}}
+{\footnotesize\ttfamily int Data\+Manip\+::find\+Nearest\+Neighbor\+Not\+Connected (\begin{DoxyParamCaption}\item[{int}]{current\+Node,  }\item[{double \&}]{min\+Distance }\end{DoxyParamCaption})}
+
+
+
+Finds the nearest unvisited neighbor directly connected to a given vertex. 
+
+This method finds the nearest unvisited neighbor directly connected to a given vertex in the graph. If no directly connected neighbor is found, it returns -\/1, indicating that no such neighbor exists.
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Node} & The ID of the current node for which the nearest neighbor is to be found. \\
+\hline
+{\em min\+Distance} & Reference to a double variable to store the minimum distance to the nearest neighbor.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The ID of the nearest unvisited neighbor vertex directly connected to the current node, or -\/1 if no such neighbor exists.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the size and structure of the graph. It iterates over the adjacent vertices of the current node to find the nearest unvisited neighbor, resulting in O(\+E) complexity, where E is the number of edges incident to the current node. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a0cdbb321aca683e55d584a8e6c248b80}\label{classDataManip_a0cdbb321aca683e55d584a8e6c248b80}} 
+\index{DataManip@{DataManip}!getBestCost@{getBestCost}}
+\index{getBestCost@{getBestCost}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{getBestCost()}{getBestCost()}}
+{\footnotesize\ttfamily int Data\+Manip\+::get\+Best\+Cost (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the best cost computed by the algorithm. 
+
+This method returns the best cost as an integer. The best cost is assumed to be computed and stored in the class instance.
+
+\begin{DoxyReturn}{Returns}
+int The best cost computed by the algorithm.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method is O(1), as it simply returns the stored integer. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_afe9e9d3d4947cadb19373f7a3a7b9904}\label{classDataManip_afe9e9d3d4947cadb19373f7a3a7b9904}} 
+\index{DataManip@{DataManip}!getBestPath@{getBestPath}}
+\index{getBestPath@{getBestPath}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{getBestPath()}{getBestPath()}}
+{\footnotesize\ttfamily std\+::vector$<$ int $>$ Data\+Manip\+::get\+Best\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the best path computed by the algorithm. 
+
+This method returns the best path as a vector of integers. The best path is assumed to be computed and stored in the class instance.
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$int$>$ The best path as a vector of integers.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method is O(1), as it simply returns the stored vector. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a07820ea9a44d26b482cae7d99d05116a}\label{classDataManip_a07820ea9a44d26b482cae7d99d05116a}} 
+\index{DataManip@{DataManip}!getGraph@{getGraph}}
+\index{getGraph@{getGraph}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{getGraph()}{getGraph()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classGraph}{Graph}} Data\+Manip\+::get\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Retrieves the graph associated with the \mbox{\hyperlink{classDataManip}{Data\+Manip}} object. 
+
+This method returns a copy of the graph stored within the \mbox{\hyperlink{classDataManip}{Data\+Manip}} object. The graph represents the underlying structure on which various graph algorithms are performed within the \mbox{\hyperlink{classDataManip}{Data\+Manip}} class.
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classGraph}{Graph}} The graph associated with the \mbox{\hyperlink{classDataManip}{Data\+Manip}} object. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classDataManip_ade781c1a0408ab0e2c453587e7fd9d88}\label{classDataManip_ade781c1a0408ab0e2c453587e7fd9d88}} 
+\index{DataManip@{DataManip}!NearestNeighborApprox@{NearestNeighborApprox}}
+\index{NearestNeighborApprox@{NearestNeighborApprox}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{NearestNeighborApprox()}{NearestNeighborApprox()}}
+{\footnotesize\ttfamily double Data\+Manip\+::\+Nearest\+Neighbor\+Approx (\begin{DoxyParamCaption}\item[{vector$<$ int $>$ \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Performs the Nearest Neighbor Approximation Algorithm to find an approximate solution for the TSP. 
+
+This method implements the Nearest Neighbor Approximation Algorithm to find an approximate solution for the Traveling Salesman Problem (TSP). It starts from an initial vertex (usually vertex 0) and iteratively selects the nearest unvisited neighbor until all vertices are visited. It returns to the start vertex to complete the tour. The approximate tour and its total cost are stored in the provided route vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em route} & Reference to a vector to store the approximate tour found by the algorithm.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The total cost of the approximate tour.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the size and structure of the graph. In the worst case, it iterates over all vertices in the graph and their adjacent vertices, resulting in O(\+V$^\wedge$2) complexity, where V is the number of vertices in the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a7360ebd23d5e5dcc27818856ae84bdc3}\label{classDataManip_a7360ebd23d5e5dcc27818856ae84bdc3}} 
+\index{DataManip@{DataManip}!NearestNeighborApproxNotConnected@{NearestNeighborApproxNotConnected}}
+\index{NearestNeighborApproxNotConnected@{NearestNeighborApproxNotConnected}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{NearestNeighborApproxNotConnected()}{NearestNeighborApproxNotConnected()}}
+{\footnotesize\ttfamily double Data\+Manip\+::\+Nearest\+Neighbor\+Approx\+Not\+Connected (\begin{DoxyParamCaption}\item[{std\+::vector$<$ int $>$ \&}]{route,  }\item[{int}]{start\+Node }\end{DoxyParamCaption})}
+
+
+
+Performs the Nearest Neighbor Approximation Algorithm for a graph with disconnected components. 
+
+This method implements the Nearest Neighbor Approximation Algorithm to find an approximate solution for the Traveling Salesman Problem (TSP) on a graph with disconnected components. It starts from a specified start node and iteratively selects the nearest unvisited neighbor until all vertices are visited. It returns to the start node to complete the tour. The approximate tour and its total cost are stored in the provided route vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em route} & Reference to a vector to store the approximate tour found by the algorithm. \\
+\hline
+{\em start\+Node} & The ID of the start node from which the algorithm begins the tour.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The total cost of the approximate tour.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This method assumes that the graph may have disconnected components. It iterates over all unvisited nodes to find the nearest neighbor, resulting in O(\+V$^\wedge$2) complexity in the worst case, where V is the number of vertices in the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a5508f5547264bae9aacb022a2bd1acec}\label{classDataManip_a5508f5547264bae9aacb022a2bd1acec}} 
+\index{DataManip@{DataManip}!RecursiveBackTracking@{RecursiveBackTracking}}
+\index{RecursiveBackTracking@{RecursiveBackTracking}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{RecursiveBackTracking()}{RecursiveBackTracking()}}
+{\footnotesize\ttfamily void Data\+Manip\+::\+Recursive\+Back\+Tracking (\begin{DoxyParamCaption}\item[{vector$<$ int $>$ \&}]{path,  }\item[{double}]{curr\+Cost,  }\item[{int}]{curr\+Pos }\end{DoxyParamCaption})}
+
+
+
+Performs recursive backtracking to find the best path. 
+
+This method performs recursive backtracking to explore all possible paths in the graph starting from the current position. It updates the best path and cost if a better solution is found during the exploration process.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & A vector representing the current path being explored. \\
+\hline
+{\em curr\+Cost} & The current cost of the path being explored. \\
+\hline
+{\em curr\+Pos} & The current position (vertex) in the graph. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classDataManip_a54e76db2836027be8f41b644d8ba25fc}\label{classDataManip_a54e76db2836027be8f41b644d8ba25fc}} 
+\index{DataManip@{DataManip}!resetGraph@{resetGraph}}
+\index{resetGraph@{resetGraph}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{resetGraph()}{resetGraph()}}
+{\footnotesize\ttfamily void Data\+Manip\+::reset\+Graph (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+set$<$ int $>$ \&}]{unvisited\+Nodes }\end{DoxyParamCaption})}
+
+
+
+Resets the visited status of vertices in the graph and populates the set of unvisited nodes. 
+
+This method resets the visited status of all vertices in the graph to false and populates the set of unvisited nodes with the IDs of all vertices in the graph.
+
+
+\begin{DoxyParams}{Parameters}
+{\em unvisited\+Nodes} & Reference to an unordered set to store the IDs of unvisited nodes.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The time complexity of this method is O(\+V), where V is the number of vertices in the graph, as it iterates over all vertices in the graph and performs constant-\/time operations to reset their visited status and insert their IDs into the set of unvisited nodes. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_aa97e5da4f96a260a724a42b3e9d7c54e}\label{classDataManip_aa97e5da4f96a260a724a42b3e9d7c54e}} 
+\index{DataManip@{DataManip}!simulatedAnnealing@{simulatedAnnealing}}
+\index{simulatedAnnealing@{simulatedAnnealing}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{simulatedAnnealing()}{simulatedAnnealing()}}
+{\footnotesize\ttfamily double Data\+Manip\+::simulated\+Annealing (\begin{DoxyParamCaption}\item[{vector$<$ int $>$ \&}]{path,  }\item[{double}]{initial\+Temperature = {\ttfamily 5000.0},  }\item[{double}]{cooling\+Rate = {\ttfamily 0.95} }\end{DoxyParamCaption})}
+
+
+
+Performs the Simulated Annealing algorithm to find an approximate solution for the TSP. 
+
+This method implements the Simulated Annealing algorithm to find an approximate solution for the Traveling Salesman Problem (TSP). It starts from an initial solution and iteratively explores neighboring solutions, accepting worse solutions with a certain probability based on the current temperature and the difference in cost between the current and neighbor solutions. The algorithm gradually decreases the temperature over iterations according to a cooling rate until a termination condition is met. The approximate tour and its total cost are stored in the provided path vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Reference to a vector to store the approximate tour found by the algorithm. \\
+\hline
+{\em initial\+Temperature} & The initial temperature parameter for the simulated annealing process. \\
+\hline
+{\em cooling\+Rate} & The cooling rate parameter for the simulated annealing process.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The total cost of the approximate tour.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the number of iterations and the complexity of the neighbor solution generation process. Typically, the algorithm performs a large number of iterations, resulting in a high time complexity. The overall time complexity is often non-\/deterministic due to the probabilistic nature of the acceptance of worse solutions. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classDataManip_a8728c7e89095432ff85c145b7f374b00}\label{classDataManip_a8728c7e89095432ff85c145b7f374b00}} 
+\index{DataManip@{DataManip}!TriangularApprox@{TriangularApprox}}
+\index{TriangularApprox@{TriangularApprox}!DataManip@{DataManip}}
+\doxysubsubsection{\texorpdfstring{TriangularApprox()}{TriangularApprox()}}
+{\footnotesize\ttfamily double Data\+Manip\+::\+Triangular\+Approx (\begin{DoxyParamCaption}\item[{vector$<$ int $>$ \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Performs the Triangular Approximation Algorithm to find an approximate solution for the TSP. 
+
+This method implements the Triangular Approximation Algorithm to find an approximate solution for the Traveling Salesman Problem (TSP). It consists of the following steps\+:
+\begin{DoxyEnumerate}
+\item Executes Prim\textquotesingle{}s algorithm to calculate the Minimum Spanning Tree (MST) of the graph.
+\item Performs a pre-\/order traversal of the MST to obtain a minimum path.
+\item Constructs a tour from the minimum path by visiting each vertex once.
+\item Calculates the cost of the tour.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Reference to a vector to store the approximate tour found by the algorithm.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The cost of the approximate tour.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the size and structure of the graph, as it involves executing Prim\textquotesingle{}s algorithm, performing a pre-\/order traversal, constructing a tour, and calculating its cost. The overall complexity is typically dominated by the time complexity of Prim\textquotesingle{}s algorithm and the pre-\/order traversal, which are both O(\+V$^\wedge$2) for dense graphs and O(V + E) for sparse graphs, where V is the number of vertices and E is the number of edges in the graph. 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/edu/\+Feup/2º ano/2º semestre/\+DA/\+Projetos/\+DA\+\_\+project2/src/Data\+Manip.\+h\item 
+/home/edu/\+Feup/2º ano/2º semestre/\+DA/\+Projetos/\+DA\+\_\+project2/src/Data\+Manip.\+cpp\end{DoxyCompactItemize}

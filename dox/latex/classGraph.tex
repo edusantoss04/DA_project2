@@ -1,0 +1,178 @@
+\hypertarget{classGraph}{}\doxysection{Graph Class Reference}
+\label{classGraph}\index{Graph@{Graph}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVertex}{Vertex}} $\ast$ \mbox{\hyperlink{classGraph_a089f7fc73ea9976295d387846ad36c69}{find\+Vertex}} (const int \&id) const
+\begin{DoxyCompactList}\small\item\em Finds a vertex in the graph by its ID. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a480675e98227b5cea4d990d301d43eee}{add\+Vertex}} (int id, double longitude, double latitude)
+\begin{DoxyCompactList}\small\item\em Adds a vertex to the graph with the specified ID and coordinates. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classGraph_a417dbec35fa7a2ca7c07c78460a60bbc}{add\+Bidirectional\+Edge}} (int \&sourc, int \&dest, double w)
+\begin{DoxyCompactList}\small\item\em Adds a bidirectional edge between two vertices with the given weight. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classGraph_abb5e0517e2979c54eebdafc2a9875e8f}{get\+Num\+Vertex}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the number of vertices in the graph. \end{DoxyCompactList}\item 
+map$<$ int, \mbox{\hyperlink{classVertex}{Vertex}} $\ast$ $>$ \mbox{\hyperlink{classGraph_a660b33876fe83ab42363d5b5ce8b4bde}{get\+Vertex\+Set}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the set of vertices in the graph. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classGraph_a5baeedf19f38dab329d578d3c7afd00c}{get\+Distance}} (\mbox{\hyperlink{classVertex}{Vertex}} $\ast$v, \mbox{\hyperlink{classVertex}{Vertex}} $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculates the distance between two vertices in the graph. \end{DoxyCompactList}\item 
+std\+::set$<$ \mbox{\hyperlink{classEdge}{Edge}} $\ast$ $>$ \mbox{\hyperlink{classGraph_a08135aa71f2297a8c6c56c4b5ac323c0}{MSTprims}} ()
+\begin{DoxyCompactList}\small\item\em Finds the Minimum Spanning Tree (MST) of the graph using Prim\textquotesingle{}s algorithm. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGraph_a0ae39f8f962983ac7133fb8361a55c79}{pre\+Order\+Visit}} (int id, std\+::vector$<$ int $>$ \&visited\+Nodes)
+\begin{DoxyCompactList}\small\item\em Performs a pre-\/order traversal starting from a specified vertex in the graph. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classGraph_a417dbec35fa7a2ca7c07c78460a60bbc}\label{classGraph_a417dbec35fa7a2ca7c07c78460a60bbc}} 
+\index{Graph@{Graph}!addBidirectionalEdge@{addBidirectionalEdge}}
+\index{addBidirectionalEdge@{addBidirectionalEdge}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{addBidirectionalEdge()}{addBidirectionalEdge()}}
+{\footnotesize\ttfamily bool Graph\+::add\+Bidirectional\+Edge (\begin{DoxyParamCaption}\item[{int \&}]{sourc,  }\item[{int \&}]{dest,  }\item[{double}]{w }\end{DoxyParamCaption})}
+
+
+
+Adds a bidirectional edge between two vertices with the given weight. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sourc} & The ID of the source vertex. \\
+\hline
+{\em dest} & The ID of the destination vertex. \\
+\hline
+{\em w} & The weight of the edge. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool True if the edge is successfully added, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a480675e98227b5cea4d990d301d43eee}\label{classGraph_a480675e98227b5cea4d990d301d43eee}} 
+\index{Graph@{Graph}!addVertex@{addVertex}}
+\index{addVertex@{addVertex}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{addVertex()}{addVertex()}}
+{\footnotesize\ttfamily bool Graph\+::add\+Vertex (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{double}]{longitude,  }\item[{double}]{latitude }\end{DoxyParamCaption})}
+
+
+
+Adds a vertex to the graph with the specified ID and coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the vertex to be added. \\
+\hline
+{\em longitude} & The longitude coordinate of the vertex. \\
+\hline
+{\em latitude} & The latitude coordinate of the vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool True if the vertex is successfully added, false if a vertex with the same ID already exists. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a089f7fc73ea9976295d387846ad36c69}\label{classGraph_a089f7fc73ea9976295d387846ad36c69}} 
+\index{Graph@{Graph}!findVertex@{findVertex}}
+\index{findVertex@{findVertex}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{findVertex()}{findVertex()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVertex}{Vertex}} $\ast$ Graph\+::find\+Vertex (\begin{DoxyParamCaption}\item[{const int \&}]{id }\end{DoxyParamCaption}) const}
+
+
+
+Finds a vertex in the graph by its ID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the vertex to find. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vertex$\ast$ A pointer to the vertex if found, nullptr otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a5baeedf19f38dab329d578d3c7afd00c}\label{classGraph_a5baeedf19f38dab329d578d3c7afd00c}} 
+\index{Graph@{Graph}!getDistance@{getDistance}}
+\index{getDistance@{getDistance}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getDistance()}{getDistance()}}
+{\footnotesize\ttfamily double Graph\+::get\+Distance (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classVertex}{Vertex}} $\ast$}]{v,  }\item[{\mbox{\hyperlink{classVertex}{Vertex}} $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculates the distance between two vertices in the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & A pointer to the first vertex. \\
+\hline
+{\em w} & A pointer to the second vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double The distance between the two vertices. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_abb5e0517e2979c54eebdafc2a9875e8f}\label{classGraph_abb5e0517e2979c54eebdafc2a9875e8f}} 
+\index{Graph@{Graph}!getNumVertex@{getNumVertex}}
+\index{getNumVertex@{getNumVertex}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getNumVertex()}{getNumVertex()}}
+{\footnotesize\ttfamily int Graph\+::get\+Num\+Vertex (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the number of vertices in the graph. 
+
+\begin{DoxyReturn}{Returns}
+int The number of vertices in the graph. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a660b33876fe83ab42363d5b5ce8b4bde}\label{classGraph_a660b33876fe83ab42363d5b5ce8b4bde}} 
+\index{Graph@{Graph}!getVertexSet@{getVertexSet}}
+\index{getVertexSet@{getVertexSet}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getVertexSet()}{getVertexSet()}}
+{\footnotesize\ttfamily map$<$ int, \mbox{\hyperlink{classVertex}{Vertex}} $\ast$ $>$ Graph\+::get\+Vertex\+Set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Retrieves the set of vertices in the graph. 
+
+\begin{DoxyReturn}{Returns}
+std\+::map$<$int, Vertex$\ast$$>$ A map containing the vertices in the graph. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a08135aa71f2297a8c6c56c4b5ac323c0}\label{classGraph_a08135aa71f2297a8c6c56c4b5ac323c0}} 
+\index{Graph@{Graph}!MSTprims@{MSTprims}}
+\index{MSTprims@{MSTprims}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{MSTprims()}{MSTprims()}}
+{\footnotesize\ttfamily std\+::set$<$ \mbox{\hyperlink{classEdge}{Edge}} $\ast$ $>$ Graph\+::\+MSTprims (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Finds the Minimum Spanning Tree (MST) of the graph using Prim\textquotesingle{}s algorithm. 
+
+This method applies Prim\textquotesingle{}s algorithm to find the Minimum Spanning Tree (MST) of the graph. It starts from an arbitrary vertex and repeatedly adds the nearest vertex that is not already in the tree until all vertices are included. The method returns a set of edges representing the MST.
+
+\begin{DoxyReturn}{Returns}
+std\+::set$<$\+Edge$\ast$$>$ A set containing the edges of the Minimum Spanning Tree (MST).
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the number of vertices and edges in the graph. It involves updating priority queues and iterating over adjacent vertices, resulting in a time complexity of O((V + E) $\ast$ log(\+V)), where V is the number of vertices and E is the number of edges in the graph. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classGraph_a0ae39f8f962983ac7133fb8361a55c79}\label{classGraph_a0ae39f8f962983ac7133fb8361a55c79}} 
+\index{Graph@{Graph}!preOrderVisit@{preOrderVisit}}
+\index{preOrderVisit@{preOrderVisit}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{preOrderVisit()}{preOrderVisit()}}
+{\footnotesize\ttfamily void Graph\+::pre\+Order\+Visit (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{std\+::vector$<$ int $>$ \&}]{visited\+Nodes }\end{DoxyParamCaption})}
+
+
+
+Performs a pre-\/order traversal starting from a specified vertex in the graph. 
+
+This method performs a pre-\/order traversal starting from the vertex with the given ID in the graph. It recursively visits each vertex in the graph in pre-\/order fashion, adding the IDs of visited vertices to the provided vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The ID of the vertex from which the pre-\/order traversal begins. \\
+\hline
+{\em visited\+Nodes} & Reference to a vector to store the IDs of visited vertices in pre-\/order.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The time complexity of this method depends on the number of vertices and edges in the graph. In the worst case, if the graph is densely connected, the time complexity can be O(\+V$^\wedge$2), where V is the number of vertices in the graph. However, for sparse graphs, the time complexity may be lower. 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/edu/\+Feup/2º ano/2º semestre/\+DA/\+Projetos/\+DA\+\_\+project2/src/\mbox{\hyperlink{Graph_8h}{Graph.\+h}}\item 
+/home/edu/\+Feup/2º ano/2º semestre/\+DA/\+Projetos/\+DA\+\_\+project2/src/Graph.\+cpp\end{DoxyCompactItemize}

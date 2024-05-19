@@ -1,0 +1,40 @@
+\hypertarget{Graph_8h}{}\doxysection{/home/edu/\+Feup/2º ano/2º semestre/\+DA/\+Projetos/\+DA\+\_\+project2/src/\+Graph.h File Reference}
+\label{Graph_8h}\index{/home/edu/Feup/2º ano/2º semestre/DA/Projetos/DA\_project2/src/Graph.h@{/home/edu/Feup/2º ano/2º semestre/DA/Projetos/DA\_project2/src/Graph.h}}
+
+
+Definition of \mbox{\hyperlink{classGraph}{Graph}} class and its associated classes.  
+
+
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}Mutable\+Priority\+Queue.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+Include dependency graph for Graph.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classGraph}{Graph}}
+\item 
+class \mbox{\hyperlink{classEdge}{Edge}}
+\item 
+struct \mbox{\hyperlink{structCompareEdge}{Compare\+Edge}}
+\item 
+class \mbox{\hyperlink{classVertex}{Vertex}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Graph_8h_a14c9dbab105f1b8b8182a022d73e610c}\label{Graph_8h_a14c9dbab105f1b8b8182a022d73e610c}} 
+const int {\bfseries INF} = std\+::numeric\+\_\+limits$<$int$>$\+::max()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definition of \mbox{\hyperlink{classGraph}{Graph}} class and its associated classes. 
+
