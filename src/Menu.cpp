@@ -69,6 +69,61 @@ void Menu::MainMenu() {
     }
 }
 
+
+void Menu::ChooseMenu() {
+    char option;
+    cout << endl << endl;
+    cout << "┌────────────────────────────────────┐" << endl
+         << "│        Choose the data set         │" << endl
+         << "├────────────────────────────────────┤" << endl
+         << "│  1 - Toy-Graphs                    │" << endl
+         << "│  2 - Extra_Fully_Connected_Graphs  │" << endl
+         << "│  3 - Real-world Graphs             │" << endl
+         << "│                                    │" << endl
+         << "│  b - Back                          │" << endl
+         << "│  e - Exit                          │" << endl
+         << "└────────────────────────────────────┘" << endl
+         << endl
+         << "What would you like to do next? ";
+
+    int flag = 1;
+    while(flag) {
+        cout << "Choose an option: ";
+        cin >> option;
+
+        switch (option) {
+            case ('1'):
+
+                ToyMenu();
+
+                flag = 0;
+                break;
+            case ('2'):
+
+                ExtraMenu();
+
+                flag = 0;
+                break;
+            case ('3'):
+
+                RealMenu();
+
+                flag = 0;
+                break;
+
+            case ('b'):
+                return MainMenu();
+
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option!" << endl;
+        }
+    }
+}
+
+
 void Menu::HeuristicsMenu() {
     char option;
     cout << endl << endl;
@@ -78,7 +133,7 @@ void Menu::HeuristicsMenu() {
          << "│  1 - Simulated Annealing           │" << endl
          << "│  2 - Nearest neighbor approximation│" << endl
          << "│                                    │" << endl
-         << "│  b - back                          │" << endl
+         << "│  b - Back                          │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
          << endl
@@ -121,58 +176,6 @@ void Menu::HeuristicsMenu() {
     }
 }
 
-void Menu::ChooseMenu() {
-    char option;
-    cout << endl << endl;
-    cout << "┌────────────────────────────────────┐" << endl
-         << "│        Choose the data set         │" << endl
-         << "├────────────────────────────────────┤" << endl
-         << "│  1 - Toy-Graphs                    │" << endl
-         << "│  2 - Extra_Fully_Connected_Graphs  │" << endl
-         << "│  3 - Real-world Graphs             │" << endl
-         << "│                                    │" << endl
-         << "│  b - back                          │" << endl
-         << "│  e - Exit                          │" << endl
-         << "└────────────────────────────────────┘" << endl
-         << endl
-         << "What would you like to do next? ";
-
-    int flag = 1;
-    while(flag) {
-        cout << "Choose an option: ";
-        cin >> option;
-
-        switch (option) {
-            case ('1'):
-
-                ToyMenu();
-
-                flag = 0;
-                break;
-            case ('2'):
-
-                ExtraMenu();
-
-                flag = 0;
-                break;
-            case ('3'):
-
-                RealMenu();
-
-                flag = 0;
-                break;
-
-            case ('b'):
-                return;
-
-            case ('e'):
-                return exitProgram();
-
-            default:
-                cout << endl << "Not a valid option!" << endl;
-        }
-    }
-}
 
 void Menu::ToyMenu() {
     char inputTypeO;
@@ -184,7 +187,7 @@ void Menu::ToyMenu() {
          << "│  2 - stadiums                      │" << endl
          << "│  3 - tourism                       │" << endl
          << "│                                    │" << endl
-         << "│  b - back                          │" << endl
+         << "│  b - Back                          │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
          << endl
@@ -219,7 +222,7 @@ void Menu::ToyMenu() {
                 break;
 
             case ('b'):
-                return;
+                return ChooseMenu();
             case ('e'):
                 return exitProgram();
 
@@ -228,6 +231,55 @@ void Menu::ToyMenu() {
         }
     }
 }
+
+
+void Menu::ExtraMenu() {
+    char inputTypeO;
+    cout << endl << endl;
+    cout << "┌────────────────────────────────────┐" << endl
+         << "│             Extra Menu             │" << endl
+         << "├────────────────────────────────────┤" << endl
+         << "│  1 - edges                         │" << endl
+         << "│  2 - nodes                         │" << endl
+         << "│                                    │" << endl
+         << "│  b - Back                          │" << endl
+         << "│  e - Exit                          │" << endl
+         << "└────────────────────────────────────┘" << endl
+         << endl
+         << "What would you like to do next? ";
+
+    int flag = 1;
+
+    while (flag) {
+        cout << "Choose an option: ";
+        cin >> inputTypeO;
+
+        switch (inputTypeO) {
+            case ('1'):
+
+                ChooseEdges();
+
+                flag = 0;
+                break;
+
+            case ('2'):
+
+                data_.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
+
+                flag = 0;
+                break;
+
+            case ('b'):
+                return ChooseMenu();
+            case ('e'):
+                return exitProgram();
+
+            default:
+                cout << endl << "Not a valid option!" << endl;
+        }
+    }
+}
+
 
 void Menu::RealMenu() {
     char inputTypeO;
@@ -239,7 +291,7 @@ void Menu::RealMenu() {
          << "│  2 - graph 2                       │" << endl
          << "│  3 - graph 3                       │" << endl
          << "│                                    │" << endl
-         << "│  b - back                          │" << endl
+         << "│  b - Back                          │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
          << endl
@@ -277,54 +329,7 @@ void Menu::RealMenu() {
                 break;
 
             case ('b'):
-                return;
-            case ('e'):
-                return exitProgram();
-
-            default:
-                cout << endl << "Not a valid option!" << endl;
-        }
-    }
-}
-
-void Menu::ExtraMenu() {
-    char inputTypeO;
-    cout << endl << endl;
-    cout << "┌────────────────────────────────────┐" << endl
-         << "│             Extra Menu             │" << endl
-         << "├────────────────────────────────────┤" << endl
-         << "│  1 - edges                         │" << endl
-         << "│  2 - nodes                         │" << endl
-         << "│                                    │" << endl
-         << "│  b - back                          │" << endl
-         << "│  e - Exit                          │" << endl
-         << "└────────────────────────────────────┘" << endl
-         << endl
-         << "What would you like to do next? ";
-
-    int flag = 1;
-
-    while (flag) {
-        cout << "Choose an option: ";
-        cin >> inputTypeO;
-
-        switch (inputTypeO) {
-            case ('1'):
-
-                ChooseEdges();
-
-                flag = 0;
-                break;
-
-            case ('2'):
-
-                data_.readNodes("../Extra_Fully_Connected_Graphs/nodes.csv");
-
-                flag = 0;
-                break;
-
-            case ('b'):
-                return;
+                return ChooseMenu();
             case ('e'):
                 return exitProgram();
 
@@ -352,7 +357,7 @@ void Menu::ChooseEdges() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Valor inválido." << endl;
+            cout << "Not a valid value." << endl;
             break;
         }
 
@@ -362,7 +367,7 @@ void Menu::ChooseEdges() {
             data_.readEdges(path);
             flag = 0;
         } else {
-           cout << "Valor inválido." << endl;
+           cout << "Not a valid value." << endl;
         }
     }
 }
@@ -409,12 +414,12 @@ void Menu::DisplayBacktracking(){
     std::vector<int> bestPath = data_.getBestPath();
     int bestCost = data_.getBestCost();
 
-    std::cout << "Melhor caminho encontrado: ";
+    std::cout << "Best path found: ";
     for (int vertex : bestPath) {
         std::cout << vertex << " ";
     }
     std::cout << std::endl;
-    std::cout << "Melhor custo encontrado: " << bestCost << std::endl;
+    std::cout << "Best cost found: " << bestCost << std::endl;
 
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
