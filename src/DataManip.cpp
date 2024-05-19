@@ -349,7 +349,7 @@ int DataManip::findNearestNeighbor(int currentNode, double &minDistance) {
     }
 
     // If no directly connected neighbor is found, find the nearest unvisited node in the graph
-    if (nearestNeighbor == -1) {
+    if ((nearestNeighbor == -1) || (minDistance > 9000) ) {
         for (const auto &v : graph_.getVertexSet()) {
             Vertex *vertex = v.second;
             if (!vertex->isVisited()) {

@@ -12,13 +12,13 @@ int main(){
 
     //auto begin = std::chrono::high_resolution_clock::now();
 
-    //Menu menu = Menu(data);
-    //menu.MainMenu();
+    Menu menu = Menu(data);
+    menu.MainMenu();
     //....................................Escolher ficheiro para ler .................................
 
     //...........TOY GRAPHS.........
     //data.readTourism("../Toy-Graphs/tourism.csv");
-    data.readToy("../Toy-Graphs/stadiums.csv");
+    //data.readToy("../Toy-Graphs/stadiums.csv");
     //data.readToy("../Toy-Graphs/shipping.csv");
 
     //..............Extra_Fully............
@@ -61,7 +61,7 @@ int main(){
 
 
     //.....................................1.TESTAR BACKTRACKING ...........................
-
+/*
     vector<int> path;
     path.push_back(0);
     int currCost = 0;
@@ -86,7 +86,7 @@ int main(){
 
     //cout << data.getGraph().getVertexSet().size();
 
-
+*/
 
     //.....................................2.TESTAR TriangularApprox .............................
 /*

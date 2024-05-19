@@ -16,7 +16,8 @@ void Menu::MainMenu() {
          << "├────────────────────────────────────┤" << endl
          << "│  1 - Backtracking                  │" << endl
          << "│  2 - TriangularApprox              │" << endl
-         << "│  3 - Heuristics                    │" << endl
+         << "│  3 - Other Heuristics              │" << endl
+         << "│  4 - TSP in Real World             │" << endl
          << "│                                    │" << endl
          << "│  e - Exit                          │" << endl
          << "└────────────────────────────────────┘" << endl
@@ -24,6 +25,7 @@ void Menu::MainMenu() {
          << "What would you like to do next? ";
 
     int flag = 1;
+    int node;
 
     while (flag) {
         cout << "Choose an option: ";
@@ -60,6 +62,18 @@ void Menu::MainMenu() {
                 MainMenu();
                 break;
 
+            case ('4'):
+
+                ChooseMenu();
+                cout << endl << "Choose start node: " << endl;
+                cin >> node;
+                DisplayTSPRW(node);
+                data_.clearData();
+                back();
+
+                flag = 0;
+                MainMenu();
+                break;
             case ('e'):
                 return exitProgram();
 
@@ -128,7 +142,7 @@ void Menu::HeuristicsMenu() {
     char option;
     cout << endl << endl;
     cout << "┌────────────────────────────────────┐" << endl
-         << "│        Heuristics Algorithm        │" << endl
+         << "│          Other Heuristics          │" << endl
          << "├────────────────────────────────────┤" << endl
          << "│  1 - Simulated Annealing           │" << endl
          << "│  2 - Nearest neighbor approximation│" << endl
@@ -432,9 +446,9 @@ void Menu::DisplayTriangularApprox() {
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
-    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+    cout << '\n' << "Best cost found: " << minCost << endl;
 
-    cout << "You should take the following path: " << endl;
+    cout << "Best path found: " << endl;
 
     for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
         cout << " " << path[i] << " ->";
@@ -452,9 +466,9 @@ void Menu::DisplayNearestNeighborApprox() {
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
-    cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
+    cout << '\n' << "Best cost found: " << minCost << endl;
 
-    cout << "You should take the following path: " << endl;
+    cout << "Best path found: " << endl;
 
     for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
         cout << " " << path[i]<< " ->";
@@ -476,8 +490,8 @@ void Menu::DisplaySimulatedAnnealing() {
 
 
     if(minCost!=0) {
-        cout << '\n' << "The minimum cost to travel between all points is " << minCost << endl;
-        cout << "You should take the following path: " << endl;
+        cout << '\n' << "Best cost found: " << minCost << endl;
+        cout << "Best path found: " << endl;
 
         for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
             cout << " " << path[i] << " ->";
@@ -487,3 +501,48 @@ void Menu::DisplaySimulatedAnnealing() {
     cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
 }
 
+void Menu::DisplayTSPRW(int node) {
+    if(data_.getGraph().getNumVertex() < 20) {
+        vector<int> path;
+        path.push_back(node);
+        int currCost = 0;
+        data_.getGraph().findVertex(node)->setVisited(true);
+        auto begin = std::chrono::high_resolution_clock::now();
+        data_.RecursiveBackTracking(path,currCost,node);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+        std::vector<int> bestPath = data_.getBestPath();
+        int bestCost = data_.getBestCost();
+
+        std::cout << "Best path found: ";
+        for (int vertex : bestPath) {
+            std::cout << vertex << " ";
+        }
+        cout << path[0] << endl << endl;
+        std::cout << "Best cost found: " << bestCost << std::endl;
+
+        auto resultado = end-begin;
+        cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+    }
+
+    else {
+        vector<int> path;
+        auto begin = std::chrono::high_resolution_clock::now();
+        double minCost = data_.NearestNeighborApproxNotConnected(path,node);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+
+
+        if(minCost!=0) {
+            cout << '\n' << "Best cost found: " << minCost << endl;
+            cout << "Best path found: " << endl;
+
+            for (int i = 0; i < data_.getGraph().getVertexSet().size(); i++) {
+                cout << " " << path[i] << " ->";
+            }
+            cout << " " << path[0] << endl << endl;
+        }
+        cout << "Execution time: " << elapsed.count() * 1e-9 << " seconds." << endl;
+    }
+}

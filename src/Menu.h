@@ -26,6 +26,8 @@ public:
     void DisplayNearestNeighborApprox();
     void DisplaySimulatedAnnealing();
 
+    void DisplayTSPRW(int node);
+
 
     void ChooseEdges();
 
