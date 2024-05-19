@@ -158,29 +158,24 @@ map< int, Vertex *> Graph::getVertexSet() {
 }
 
 std::set<Edge*> Graph::MSTprims() {
-    std::set<Edge*> mstEdges; // Set to store MST edges
+    std::set<Edge*> mstEdges;
 
-    // Check if the graph is empty
     if (vertexSet.empty()) {
-        return mstEdges; // Return an empty set if the graph is empty
+        return mstEdges;
     }
 
-    // Initialize the vertices in the graph
     for (auto v : vertexSet) {
-        v.second->setPath(nullptr); // Set path to null
-        v.second->setVisited(false); // Mark as not visited
+        v.second->setPath(nullptr);
+        v.second->setVisited(false);
         v.second->setDist(std::numeric_limits<double>::infinity());
     }
 
-    // Select the first vertex as the starting point
     Vertex* s = vertexSet.begin()->second;
-    s->setDist(0); // Set distance of the starting vertex to 0
+    s->setDist(0);
 
-    // Priority queue to store vertices based on their distances
     MutablePriorityQueue<Vertex> q;
     q.insert(s);
 
-    // Main loop for the Prim's algorithm
     while (!q.empty()) {
         auto v = q.extractMin();
         v->setVisited(true);
@@ -204,7 +199,6 @@ std::set<Edge*> Graph::MSTprims() {
                     }
                 }
 
-                // Add the edge to MST if it is not already present
                 if (w->getDist() == weight) {
                     mstEdges.insert(adj.second);
                 }
@@ -212,7 +206,6 @@ std::set<Edge*> Graph::MSTprims() {
         }
     }
 
-    // Return the set of MST edges after the Prim's algorithm completes
     return mstEdges;
 }
 void Graph :: preOrderVisit( int id, std::vector<int> &visitedNodes) {
