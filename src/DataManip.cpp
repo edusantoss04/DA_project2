@@ -105,8 +105,6 @@ void DataManip::readEdges(string filename) {
     double distancia;
     string line;
 
-    // Verifica se a primeira linha é "origem,destino,distancia"
-
     if (in.is_open()) {
 
         while(getline(in, line)){
@@ -137,8 +135,6 @@ void DataManip::readEdgesLarge(string filename) {
      int destino, origem;
     double distancia;
     string line;
-
-    // Verifica se a primeira linha é "origem,destino,distancia"
 
     if (in.is_open()) {
         std::getline(in, line);
@@ -336,7 +332,6 @@ int DataManip::findNearestNeighbor(int currentNode, double &minDistance) {
     minDistance = std::numeric_limits<double>::max();
     Vertex *currentVertex = graph_.findVertex(currentNode);
 
-    // First, find the nearest unvisited neighbor directly connected to the current node
     for (const auto &pair : currentVertex->getAdj()) {
         Edge* edge = pair.second;
         Vertex *vertex = edge->getDest();
@@ -348,7 +343,6 @@ int DataManip::findNearestNeighbor(int currentNode, double &minDistance) {
         }
     }
 
-    // If no directly connected neighbor is found, find the nearest unvisited node in the graph
     if ((nearestNeighbor == -1) || (minDistance > 9000) ) {
         for (const auto &v : graph_.getVertexSet()) {
             Vertex *vertex = v.second;
@@ -370,7 +364,6 @@ int DataManip::findNearestNeighborNotConnected(int currentNode, double &minDista
     minDistance = std::numeric_limits<double>::max();
     Vertex *currentVertex = graph_.findVertex(currentNode);
 
-    // First, find the nearest unvisited neighbor directly connected to the current node
     for (const auto &pair : currentVertex->getAdj()) {
         Edge* edge = pair.second;
         Vertex *vertex = edge->getDest();
@@ -382,7 +375,6 @@ int DataManip::findNearestNeighborNotConnected(int currentNode, double &minDista
         }
     }
 
-    // If no directly connected neighbor is found, find the nearest unvisited node in the graph
     if (nearestNeighbor == -1) {
        return -1;
     }
@@ -416,7 +408,6 @@ double DataManip::NearestNeighborApprox(std::vector<int> &route) {
         currentNode = nextNode;
     }
 
-    // Return to the start node
     route.push_back(0);
     for (const auto &pair : graph_.findVertex(currentNode)->getAdj()) {
         Edge *edge = pair.second;
@@ -456,7 +447,6 @@ double DataManip::NearestNeighborApproxNotConnected(std::vector<int> &route,int 
         currentNode = nextNode;
     }
 
-    // Return to the start node
     route.push_back(startNode);
     for (const auto &pair : graph_.findVertex(currentNode)->getAdj()) {
         Edge *edge = pair.second;
