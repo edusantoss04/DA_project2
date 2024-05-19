@@ -46,7 +46,7 @@ bool Vertex::isVisited() {
     return visited;
 }
 
-unordered_map<int ,Edge*> &Vertex::getAdj() {     //*
+unordered_map<int ,Edge*> &Vertex::getAdj() {
     return adj;
 }
 
@@ -230,19 +230,6 @@ void Graph :: preOrderVisit( int id, std::vector<int> &visitedNodes) {
     }
 }
 
-/*
-bool Graph::addEdge(const unsigned int &sourceId, const unsigned int &destId, double distance) {
-    auto v1 = findVertex(sourceId);
-    auto v2 = findVertex(destId);
-    if(v1 == nullptr|| v2 == nullptr){
-        return false;
-    }
-    v1->addEdge(v2,distance);
-    return true;
-}
- */
-
-
 //............................EDGE........................................
 Edge::Edge(Vertex *o, Vertex *d, double distance) {
     this->orig = o;
@@ -264,64 +251,4 @@ double Edge::getDistance() const {
 
 void Edge::setReverse(Edge *reverse) {
     this->reverse = reverse;
-}
-
-
-/*
-Edge* Graph::findEdge(int IdOrigin,int IdDest){
-
-    for (auto v : vertexSet){
-        for(auto e : v.second->getAdj()){
-            if(e->getOrig()->getId() == IdOrigin && e->getDest()->getId() == IdDest){
-                return e;
-            }
-        }
-    }
-    return nullptr;
-}
-*/
-
-
-vector<Vertex*> Graph::findOddDegree() {
-    std::vector<Vertex*> oddVertices;
-    for (auto vertex: vertexSet) {
-        if (vertex.second->getIncoming().size() % 2 != 0) {
-            oddVertices.push_back(vertex.second);
-        }
-    }
-    return oddVertices;
-}
-set<Edge*> Graph::perfectMatching(const std::vector<Vertex*>& oddVertices) {
-    std::set<Edge*> matching;
-
-    // Implementação simples: emparelha cada vértice ímpar com o mais próximo
-    for (size_t i = 0; i < oddVertices.size(); ++i) {
-        Vertex* v1 = oddVertices[i];
-        Vertex* closestVertex = nullptr;
-        double minDistance = std::numeric_limits<double>::max();
-
-        for (size_t j = 0; j < oddVertices.size(); ++j) {
-            if (i != j) {
-                Vertex* v2 = oddVertices[j];
-                double distance = calculateDist(v1->getLatitude(), v1->getLongitude(),
-                                                    v2->getLatitude(), v2->getLongitude());
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestVertex = v2;
-                }
-            }
-        }
-
-        // Cria uma aresta entre os dois vértices para o emparelhamento
-        v1->addEdge(closestVertex, minDistance);
-        auto edge = v1->getAdj().find(closestVertex->getId())->second;
-
-
-// Verifica se a aresta foi encontrada e a adiciona ao conjunto de emparelhamento
-        if (edge != nullptr) {
-            matching.insert(edge);
-        }
-    }
-
-    return matching;
 }
